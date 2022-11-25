@@ -1,16 +1,21 @@
 # bloom
+## CMSC 23 Shared Todo App Project
+A shared todo app where you can see your friends' todos. Bloom together as all of you complete your tasks step-by-step, little-by-little :>
 
-A new Flutter project.
+### Angelica Nicolette U. Adoptante
+### 2020-01692
+### D-1L
 
-## Getting Started
+## Screenshots
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Things you did in the code
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Challenges faced
+
+
+## Test Cases
+
+
+## References
