@@ -1,3 +1,14 @@
+/*
+    Author: Angelica Nicolette U. Adoptante
+    Section: D1L
+    Date created: November 26, 2022
+    Shared Todo App Project: bloom
+    Program Description: 
+        A shared todo app where you can see your friends' todos. 
+        Bloom together as all of you complete your tasks 
+        step-by-step, little-by-little :>
+    File Description: main
+ */
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
