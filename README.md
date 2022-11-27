@@ -19,3 +19,5 @@ A shared todo app where you can see your friends' todos. Bloom together as all o
 
 
 ## References
+[1] https://stackoverflow.com/questions/66397629/retrieving-data-of-currently-logged-in-user-using-firebase-realtime-database-in
+[2] 
