@@ -11,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:bloom/providers/user_provider.dart';
 import 'package:bloom/models/user_model.dart';
+import 'package:bloom/providers/auth_provider.dart';
 // screen import
 
 class UserPage extends StatefulWidget {
@@ -104,6 +105,7 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
+    var uid = context.watch<AuthProvider>().user!.uid;
     // get list of users
     Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
     return StreamBuilder(
@@ -134,7 +136,7 @@ class _UserPageState extends State<UserPage> {
               User user = User.fromJson(
                   snapshot.data?.docs[index].data() as Map<String, dynamic>);
               // show all users except the current user
-              if (user.userName != "user1") {
+              if (user.userId != uid) {
                 // temporary basis for checking
                 RegExp regex = RegExp(widget.regex, caseSensitive: false);
                 // only return matched displayNames

@@ -20,4 +20,5 @@ A shared todo app where you can see your friends' todos. Bloom together as all o
 
 ## References
 [1] https://stackoverflow.com/questions/66397629/retrieving-data-of-currently-logged-in-user-using-firebase-realtime-database-in
-[2] 
+[2] https://www.kindacode.com/article/working-with-elevatedbutton-in-flutter/#Style_Color_Border_Elevation
+[3] https://docs.appgyver.com/docs/get-current-user-firebase-auth

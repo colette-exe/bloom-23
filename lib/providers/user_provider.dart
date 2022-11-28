@@ -5,6 +5,8 @@
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
     File Description: User-related operations
  */
+import 'package:bloom/api/firebase_auth_api.dart';
+import 'package:bloom/providers/auth_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bloom/api/firebase_user_api.dart';
@@ -13,6 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserListProvider with ChangeNotifier {
   late FireBaseUserAPI firebaseService;
+  late FirebaseAuthAPI firebaseAuthService;
   late Stream<QuerySnapshot> _userStream;
   User? _selectedUser;
 

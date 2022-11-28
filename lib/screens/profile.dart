@@ -1,14 +1,10 @@
 /*
     Author: Angelica Nicolette U. Adoptante
     Section: D1L
-    Date created: November 14, 2022
-    Exercise number: 06
-    Program Description: 
-          A Firebase Project that uses the database 
-          to store users, access it when looking up users,
-          and for adding, unfriending, sending, rejecting, and accepting
-          friend requests
+    Date created: November 14, 2022 (from Exercise 6)
+    Program Description: bloom - Shared Todo App (CMSC 23 Project)
  */
+import 'package:bloom/providers/auth_provider.dart';
 import 'package:bloom/providers/user_provider.dart';
 import 'package:bloom/screens/user_page.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bloom/models/user_model.dart';
 
 class Profile extends StatefulWidget {
-  Profile({super.key});
-  String userName = "user1";
+  const Profile({super.key});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -68,8 +63,13 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    DocumentReference userDoc =
-        context.watch<UserListProvider>().getUserByUserName(widget.userName);
+    // final String userId = context.read<AuthProvider>().getCurrentUser();
+
+    DocumentReference userDoc = context
+        .watch<UserListProvider>()
+        .getUserByUserName(context.watch<AuthProvider>().user!.uid);
+    // print("\nprint: ${userDoc}\n");
+
     // final args = ModalRoute.of(context)!.settings.arguments as InputName;
     return Scaffold(
       drawer: Drawer(
@@ -86,6 +86,12 @@ class _ProfileState extends State<Profile> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/search');
+                }),
+            ListTile(
+                title: const Text('LOGOUT'),
+                onTap: () {
+                  Navigator.pop(context);
+                  context.read<AuthProvider>().signOut();
                 })
           ]),
         ),
@@ -126,14 +132,26 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Column(children: [
-                            Text(data['displayName'],
+                            Text(data['firstName'] + " " + data['lastName'],
                                 style: const TextStyle(
-                                    fontSize: 30,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Poppins',
                                     letterSpacing: 1.5,
                                     color: Colors.white)),
-                            Text(data['userName'],
+                            Text(data['username'],
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87)),
+                            Text(data['bday'],
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87)),
+                            Text(data['location'],
                                 style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,

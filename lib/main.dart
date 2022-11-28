@@ -10,8 +10,11 @@
     File Description: main
  */
 import 'package:bloom/providers/user_provider.dart';
+import 'package:bloom/screens/login.dart';
 import 'package:bloom/screens/profile.dart';
 import 'package:bloom/screens/search.dart';
+import 'package:bloom/providers/auth_provider.dart';
+import 'package:bloom/screens/signup.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,6 +30,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: ((context) => UserListProvider())),
+        ChangeNotifierProvider(create: ((context) => AuthProvider())),
       ],
       child: const MyApp(),
     ),
@@ -39,9 +43,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Exercise 6',
+      title: 'bloom',
       initialRoute: '/',
-      routes: {'/': (context) => Profile(), '/search': (context) => Search()},
+      routes: {
+        '/login': (context) => const Login(),
+        '/sign-up': (context) => const SignUpPage(),
+        '/': (context) => AuthWrapper(),
+        '/search': (context) => Search()
+      },
+      // color: Colors.green.shade600,
+      theme: ThemeData(primarySwatch: Colors.green),
     );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (context.watch<AuthProvider>().isAuthenticated) {
+      return Profile();
+    } else {
+      return const Login();
+    }
   }
 }
