@@ -16,10 +16,8 @@ import 'package:bloom/providers/auth_provider.dart';
 
 class UserPage extends StatefulWidget {
   String regex;
-  UserPage({
-    super.key,
-    required this.regex,
-  });
+  String uid;
+  UserPage({super.key, required this.regex, required this.uid});
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -105,8 +103,8 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    var uid = context.watch<AuthProvider>().user!.uid;
     // get list of users
+    // String uid = context.watch<AuthProvider>().userObj!.uid;
     Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
     return StreamBuilder(
       stream: usersStream,
@@ -136,13 +134,14 @@ class _UserPageState extends State<UserPage> {
               User user = User.fromJson(
                   snapshot.data?.docs[index].data() as Map<String, dynamic>);
               // show all users except the current user
-              if (user.userId != uid) {
+              if (user.userId != widget.uid) {
                 // temporary basis for checking
                 RegExp regex = RegExp(widget.regex, caseSensitive: false);
                 // only return matched displayNames
-                if (regex.hasMatch(user.displayName)) {
+                if (regex.hasMatch(user.firstName) ||
+                    regex.hasMatch(user.lastName)) {
                   return Dismissible(
-                      key: Key(user.userId.toString()),
+                      key: Key(user.userId),
                       onDismissed: (direction) {
                         // context
                         //     .read<UserListProvider>()
@@ -153,7 +152,7 @@ class _UserPageState extends State<UserPage> {
                         child: const Icon(Icons.delete),
                       ),
                       child: ListTile(
-                        title: Text(user.displayName,
+                        title: Text("${user.firstName} ${user.lastName}",
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w300,
@@ -162,7 +161,7 @@ class _UserPageState extends State<UserPage> {
                         trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              iconButtonBuilder(context, 'user1', user)
+                              iconButtonBuilder(context, widget.uid, user)
                             ]),
                       ));
                 } else {

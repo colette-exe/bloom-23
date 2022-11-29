@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/sign-up': (context) => const SignUpPage(),
         '/': (context) => AuthWrapper(),
-        '/search': (context) => Search()
+        '/search': (context) => Search(),
       },
       // color: Colors.green.shade600,
       theme: ThemeData(primarySwatch: Colors.green),

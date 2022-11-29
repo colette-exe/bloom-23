@@ -7,6 +7,8 @@
 import 'package:bloom/screens/user_page.dart';
 import 'package:flutter/material.dart';
 
+import '../models/current_user.dart';
+
 class Search extends StatefulWidget {
   Search({super.key});
   String text = "";
@@ -20,7 +22,7 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    // final args = ModalRoute.of(context)!.settings.arguments as InputName;
+    final args = ModalRoute.of(context)!.settings.arguments as CurrentUser;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search',
@@ -67,7 +69,7 @@ class _SearchState extends State<Search> {
                 ),
                 SizedBox(
                     height: MediaQuery.of(context).size.height - 200,
-                    child: UserPage(regex: widget.text)),
+                    child: UserPage(regex: widget.text, uid: args.uid)),
               ])),
     );
   }

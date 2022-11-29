@@ -74,12 +74,13 @@ class FirebaseAuthAPI {
       String lastName, String bday, String location, String username) async {
     try {
       await db.collection("users").doc(uid).set({
+        "userId": uid,
         "email": email,
         "firstName": firstName,
         "lastName": lastName,
         "bday": bday,
         "location": location,
-        "username": username,
+        "userName": username,
         "friends": [],
         "receivedFriendRequests": [],
         "sentFriendRequests": []

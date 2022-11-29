@@ -4,6 +4,7 @@
     Date created: November 14, 2022 (from Exercise 6)
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
  */
+import 'package:bloom/models/current_user.dart';
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:bloom/providers/user_provider.dart';
 import 'package:bloom/screens/user_page.dart';
@@ -67,8 +68,8 @@ class _ProfileState extends State<Profile> {
 
     DocumentReference userDoc = context
         .watch<UserListProvider>()
-        .getUserByUserName(context.watch<AuthProvider>().user!.uid);
-    // print("\nprint: ${userDoc}\n");
+        .getUserById(context.watch<AuthProvider>().user!.uid);
+    CurrentUser uid = CurrentUser(userDoc.id);
 
     // final args = ModalRoute.of(context)!.settings.arguments as InputName;
     return Scaffold(
@@ -85,14 +86,20 @@ class _ProfileState extends State<Profile> {
                 title: const Text('Search Friends'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/search');
+                  Navigator.pushNamed(context, '/search', arguments: uid);
+                }),
+            ListTile(
+                title: const Text('Todos'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/todos'); // make a todo page
                 }),
             ListTile(
                 title: const Text('LOGOUT'),
                 onTap: () {
                   Navigator.pop(context);
                   context.read<AuthProvider>().signOut();
-                })
+                }),
           ]),
         ),
       ),
@@ -106,9 +113,9 @@ class _ProfileState extends State<Profile> {
         heightFactor: MediaQuery.of(context).size.height,
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.blue.shade100),
+              border: Border.all(color: Colors.green.shade100),
               borderRadius: const BorderRadius.all(Radius.circular(20)),
-              color: Colors.blue.shade400),
+              color: Colors.green.shade400),
           width: 400,
           height: 500,
           alignment: Alignment.center,
@@ -139,7 +146,7 @@ class _ProfileState extends State<Profile> {
                                     fontFamily: 'Poppins',
                                     letterSpacing: 1.5,
                                     color: Colors.white)),
-                            Text(data['username'],
+                            Text(data['userName'],
                                 style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,

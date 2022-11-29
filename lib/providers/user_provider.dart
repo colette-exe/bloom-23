@@ -47,19 +47,19 @@ class UserListProvider with ChangeNotifier {
 
   // parameter: userName
   // returns a DocumentReference to the entry with userName as its userName
-  getUserByUserName(String userName) {
-    return firebaseService.getUserByUserName(userName);
+  getUserById(String id) {
+    return firebaseService.getUserByUserId(id);
   }
 
   // parameter: userId
-  // returns a DocumentReference to the entry with userName as its userId
+  // returns a DocumentReference to the entry with its userId
   List getUserByUserId(String userId) {
     DocumentReference userRef = firebaseService.getUserByUserId(userId);
     userRef.get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         var data = documentSnapshot.data() as Map<String, dynamic>;
         User user = User.fromJson(data);
-        return [user.displayName, user.userName];
+        return [user.firstName, user.lastName, user.userName];
       }
     });
     return [];
@@ -67,7 +67,7 @@ class UserListProvider with ChangeNotifier {
 
   checkStatus(String userId, String otherId) {
     // get userId's friends, receivedFriendRequests, and sentFriendRequests lists
-    DocumentReference userRef = firebaseService.getUserByUserName(userId);
+    DocumentReference userRef = firebaseService.getUserByUserId(userId);
     userRef.get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         // .data() returns a Map<String, dynamic>

@@ -11,9 +11,12 @@ class User {
   // user attributes
   String userId;
   String userName;
-  String displayName;
+  String firstName;
+  String lastName;
+  String bday;
+  String location;
 
-  // lists of int userIds
+  // lists of string userIds
   List<dynamic> friends;
   List<dynamic> receivedFriendRequests;
   List<dynamic> sentFriendRequests;
@@ -22,7 +25,10 @@ class User {
   User({
     required this.userId,
     required this.userName,
-    required this.displayName,
+    required this.firstName,
+    required this.lastName,
+    required this.bday,
+    required this.location,
     required this.friends,
     required this.receivedFriendRequests,
     required this.sentFriendRequests,
@@ -34,7 +40,10 @@ class User {
     return User(
       userId: json['userId'],
       userName: json['userName'],
-      displayName: json['displayName'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      bday: json['bday'],
+      location: json['location'],
       friends: json['friends'],
       receivedFriendRequests: json['receivedFriendRequests'],
       sentFriendRequests: json['sentFriendRequests'],
@@ -46,7 +55,10 @@ class User {
     return {
       'userId': user.userId,
       'userName': user.userName,
-      'displayName': user.displayName,
+      'firstName': user.firstName,
+      'lastName': user.lastName,
+      'bday': user.bday,
+      'location': user.location,
       'friends': user.friends,
       'receivedFriendRequests': user.receivedFriendRequests,
       'sentFriendRequests': user.sentFriendRequests,

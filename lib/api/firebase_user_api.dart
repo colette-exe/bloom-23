@@ -37,11 +37,6 @@ class FireBaseUserAPI {
         .where(FieldPath.documentId, arrayContains: ids);
   }
 
-  // get a user based on their userName
-  DocumentReference<Map<String, dynamic>> getUserByUserName(String userName) {
-    return db.collection("users").doc(userName);
-  }
-
   // get a user based on their userId
   DocumentReference<Map<String, dynamic>> getUserByUserId(String userId) {
     return db.collection("users").doc(userId);
