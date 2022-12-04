@@ -1,3 +1,10 @@
+/*
+    Author: Angelica Nicolette U. Adoptante
+    Section: D1L
+    Date created: December 4, 2022
+    Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File Description: Views the currently logged in user's received friend requests
+ */
 import 'package:bloom/screens/user_page.dart';
 import 'package:flutter/material.dart';
 import '../models/screen_arguments.dart';

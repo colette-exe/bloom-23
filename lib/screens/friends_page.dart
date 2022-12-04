@@ -1,3 +1,10 @@
+/*
+    Author: Angelica Nicolette U. Adoptante
+    Section: D1L
+    Date created: December 4, 2022
+    Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File Description: Views the currently logged in user's friends list
+ */
 import 'package:bloom/models/screen_arguments.dart';
 import 'package:flutter/material.dart';
 import 'user_page.dart';

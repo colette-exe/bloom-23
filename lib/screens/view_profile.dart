@@ -1,13 +1,17 @@
-import 'package:bloom/models/screen_arguments.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+/*
+    Author: Angelica Nicolette U. Adoptante
+    Section: D1L
+    Date created: December 4, 2022
+    Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File Description: Views a user's profile
+ */
 
-import '../models/user_model.dart';
-import '../providers/user_provider.dart';
+import 'package:bloom/models/screen_arguments.dart';
+import 'package:flutter/material.dart';
+import 'package:bloom/models/user_model.dart';
 
 class ViewProfile extends StatefulWidget {
-  ViewProfile({super.key});
+  const ViewProfile({super.key});
 
   @override
   State<ViewProfile> createState() => _ViewProfileState();

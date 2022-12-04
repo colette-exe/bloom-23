@@ -1,6 +1,10 @@
+/*
+  From Exercise 7 Authentication and Testing Discussion Code
+*/
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import for testing
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+// import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 class FirebaseTodoAPI {
   // commented out for testing
