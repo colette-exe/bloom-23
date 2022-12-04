@@ -5,6 +5,7 @@
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
     File Description: Displays users
  */
+import 'package:bloom/models/screen_arguments.dart';
 import 'package:bloom/screens/modal_user.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -213,11 +214,20 @@ class _UserPageState extends State<UserPage> {
                                 fontWeight: FontWeight.w300,
                                 fontFamily: 'Poppins',
                                 color: Colors.black87)),
-                        trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              iconButtonBuilder(context, widget.uid, user)
-                            ]),
+                        trailing:
+                            Row(mainAxisSize: MainAxisSize.min, children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, '/view-profile',
+                                    arguments:
+                                        ScreenArguments(user.userId, user));
+                              },
+                              icon: const Icon(Icons
+                                  .remove_red_eye_outlined)), // view profile
+                          iconButtonBuilder(
+                              context, widget.uid, user) // user action
+                        ]),
                       ));
                 } else {
                   return const SizedBox.shrink();

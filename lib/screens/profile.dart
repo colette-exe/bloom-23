@@ -108,7 +108,6 @@ class _ProfileState extends State<Profile> {
         .getUserById(context.watch<AuthProvider>().user!.uid);
     // ScreenArguments uid = ScreenArguments(userDoc.id, []);
     String uid = userDoc.id;
-    // final args = ModalRoute.of(context)!.settings.arguments as InputName;
     return Scaffold(
       drawer: Drawer(
         child: Drawer(
@@ -138,9 +137,7 @@ class _ProfileState extends State<Profile> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/friends',
-                      arguments: ScreenArguments(
-                        uid,
-                      ));
+                      arguments: ScreenArguments(uid, null));
                 }),
             ListTile(
                 title: const Text(
@@ -155,9 +152,7 @@ class _ProfileState extends State<Profile> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/requests',
-                      arguments: ScreenArguments(
-                        uid,
-                      ));
+                      arguments: ScreenArguments(uid, null));
                 }),
             ListTile(
                 title: const Text(
@@ -172,9 +167,7 @@ class _ProfileState extends State<Profile> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/search',
-                      arguments: ScreenArguments(
-                        uid,
-                      ));
+                      arguments: ScreenArguments(uid, null));
                 }),
             ListTile(
                 title: const Text(
@@ -249,7 +242,7 @@ class _ProfileState extends State<Profile> {
                   return SizedBox(
                       height: 800,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(data['firstName'] + " " + data['lastName'],
                               style: const TextStyle(

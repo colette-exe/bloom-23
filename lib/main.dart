@@ -18,6 +18,7 @@ import 'package:bloom/screens/search.dart';
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:bloom/screens/signup.dart';
 import 'package:bloom/screens/todo_page.dart';
+import 'package:bloom/screens/view_profile.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/todos': (context) => const TodoPage(),
         '/friends': (context) => const FriendsPage(),
         '/requests': (context) => const RequestsPage(),
+        '/view-profile': ((context) => ViewProfile()),
       },
       // color: Colors.green.shade600,
       theme: ThemeData(primarySwatch: Colors.green),
