@@ -21,37 +21,116 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  TextEditingController bioController = TextEditingController();
+  bool readOnly = true;
+  Widget buttonWidget(BuildContext context, bioController, userId) {
+    if (readOnly) {
+      // edit button
+      return ElevatedButton(
+        onPressed: () {
+          setState(() {
+            readOnly = false;
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green.shade500,
+        ),
+        child: const Text(
+          "EDIT",
+          style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Poppins',
+              color: Colors.black87),
+        ),
+      );
+    } else {
+      // save button
+      return ElevatedButton(
+        onPressed: () {
+          setState(() {
+            readOnly = true;
+            // update bio from userlist provider
+            context
+                .read<UserListProvider>()
+                .changeBio(userId, bioController.text);
+            (context as Element).reassemble();
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green.shade500,
+        ),
+        child: const Text("SAVE",
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.normal,
+                fontFamily: 'Poppins',
+                color: Colors.black87)),
+      );
+    }
+  }
+
+  Widget bioWidget(BuildContext context, bio, userId) {
+    bioController.text = bio;
+
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      SizedBox(
+        width: 200,
+        height: 200,
+        child: ListView(children: [
+          TextField(
+            readOnly: readOnly,
+            controller: bioController,
+            style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                fontFamily: 'Poppins',
+                color: Colors.black87),
+            decoration: const InputDecoration(border: OutlineInputBorder()),
+          )
+        ]),
+      ),
+      // check buttons to display
+      buttonWidget(context, bioController, userId),
+    ]);
+  }
+
   Widget friendsWidget(BuildContext context, lst) {
     if (lst.length > 0) {
-      return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const Text("FRIENDS",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w200,
-                    fontFamily: 'Poppins',
-                    letterSpacing: 1.0,
-                    color: Colors.black54)),
-            SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  itemCount: lst.length,
-                  shrinkWrap: true,
-                  itemBuilder: ((context, index) {
-                    // List f = context
-                    //     .read<UserListProvider>()
-                    //     .getUserByUserId(lst[index]);
-                    return Text(lst[index],
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w200,
-                            fontFamily: 'Poppins',
-                            letterSpacing: 1.0,
-                            color: Colors.blueGrey.shade800));
-                  }),
-                ))
-          ]);
+      return Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text("FRIENDS",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w200,
+                        fontFamily: 'Poppins',
+                        letterSpacing: 1.0,
+                        color: Colors.black54)),
+                SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      // try making this a streambuilder instead
+                      itemCount: lst.length,
+                      shrinkWrap: true,
+                      itemBuilder: ((context, index) {
+                        var user = context
+                            .watch<UserListProvider>()
+                            .getNameByUserId(lst[index]);
+
+                        print("in profile: $user");
+                        return Text("${lst[index]}",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: 'Poppins',
+                                letterSpacing: 1.0,
+                                color: Colors.blueGrey.shade800));
+                      }),
+                    ))
+              ]));
     } else {
       return Text("No Friends Yet",
           style: TextStyle(
@@ -78,24 +157,54 @@ class _ProfileState extends State<Profile> {
           child: ListView(padding: EdgeInsets.zero, children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blueAccent,
+                color: Colors.green,
               ),
-              child: Text('WHERE TO?'),
+              child: Text('WHERE TO?',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 1,
+                      color: Colors.white)),
             ),
             ListTile(
-                title: const Text('Search Friends'),
+                title: const Text(
+                  'Search Users',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 1,
+                      color: Colors.black),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/search', arguments: uid);
                 }),
             ListTile(
-                title: const Text('Todos'),
+                title: const Text(
+                  'Todos',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 1,
+                      color: Colors.black),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/todos'); // make a todo page
                 }),
             ListTile(
-                title: const Text('LOGOUT'),
+                title: const Text(
+                  'LOGOUT',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 1,
+                      color: Colors.black),
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   context.read<AuthProvider>().signOut();
@@ -106,7 +215,15 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        titleTextStyle: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Poppins',
+            letterSpacing: 1.5,
+            color: Colors.white),
       ),
       body: Center(
         widthFactor: MediaQuery.of(context).size.width,
@@ -116,11 +233,11 @@ class _ProfileState extends State<Profile> {
               border: Border.all(color: Colors.green.shade100),
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               color: Colors.green.shade400),
-          width: 400,
-          height: 500,
+          width: 500,
+          height: 1000,
           alignment: Alignment.center,
           margin: const EdgeInsets.all(50),
-          padding: const EdgeInsets.all(50),
+          padding: const EdgeInsets.all(20),
           child: FutureBuilder<DocumentSnapshot>(
               future: userDoc.get(),
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -134,37 +251,53 @@ class _ProfileState extends State<Profile> {
                   Map<String, dynamic> data =
                       snapshot.data!.data() as Map<String, dynamic>;
                   return SizedBox(
-                      height: 500,
+                      height: 800,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Text(data['firstName'] + " " + data['lastName'],
+                              style: const TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins',
+                                  letterSpacing: 1,
+                                  color: Colors.white)),
                           Column(children: [
-                            Text(data['firstName'] + " " + data['lastName'],
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins',
-                                    letterSpacing: 1.5,
-                                    color: Colors.white)),
                             Text(data['userName'],
                                 style: const TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Poppins',
                                     color: Colors.black87)),
-                            Text(data['bday'],
+                            Text("ID: ${data['userId']}",
                                 style: const TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Poppins',
-                                    color: Colors.black87)),
-                            Text(data['location'],
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black87))
+                                    color: Colors.black54)),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(data['bday'],
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Poppins',
+                                          color: Colors.black87)),
+                                  Icon(
+                                    Icons.spa_rounded,
+                                    color: Colors.amber.shade400,
+                                  ),
+                                  Text(data['location'],
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Poppins',
+                                          color: Colors.black87)),
+                                ]),
                           ]),
+                          bioWidget(context, data['bio'], data['userId']),
                           friendsWidget(context, data['friends']),
                         ],
                       ));

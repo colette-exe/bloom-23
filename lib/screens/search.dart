@@ -18,7 +18,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _SearchState extends State<Search> {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
                 color: Colors.white)),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.green,
       ),
       body: Container(
           padding: const EdgeInsets.all(30),

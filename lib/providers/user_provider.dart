@@ -35,14 +35,14 @@ class UserListProvider with ChangeNotifier {
     _selectedUser = user;
   }
 
-  getUsersByIds(List ids) {
-    return firebaseService.getAllUsersByIds(ids);
-  }
-
   // get users from the database
   void fetchUsers() {
     _userStream = firebaseService.getAllUsers();
     notifyListeners();
+  }
+
+  getAllUserNames() {
+    return firebaseService.allUsers();
   }
 
   // parameter: userName
@@ -53,16 +53,8 @@ class UserListProvider with ChangeNotifier {
 
   // parameter: userId
   // returns a DocumentReference to the entry with its userId
-  List getUserByUserId(String userId) {
-    DocumentReference userRef = firebaseService.getUserByUserId(userId);
-    userRef.get().then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        var data = documentSnapshot.data() as Map<String, dynamic>;
-        User user = User.fromJson(data);
-        return [user.firstName, user.lastName, user.userName];
-      }
-    });
-    return [];
+  getNameByUserId(String userId) {
+    return firebaseService.getUserByUserId(userId).get();
   }
 
   checkStatus(String userId, String otherId) {
@@ -147,6 +139,12 @@ class UserListProvider with ChangeNotifier {
   void cancelRequest(String id) async {
     String message =
         await firebaseService.cancelRequest(id, _selectedUser!.userId);
+    print(message);
+    notifyListeners();
+  }
+
+  void changeBio(String id, String bio) async {
+    String message = await firebaseService.updateBio(id, bio);
     print(message);
     notifyListeners();
   }

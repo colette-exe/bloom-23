@@ -13,6 +13,7 @@ class FireBaseUserAPI {
   static const String RECEIVED = "receivedFriendRequests";
   static const String SENT = "sentFriendRequests";
   static const String FRIENDS = "friends";
+  static const String BIO = "bio";
 
   // adding user after signing up
   Future<String> addUser(Map<String, dynamic> user) async {
@@ -31,15 +32,24 @@ class FireBaseUserAPI {
     return db.collection("users").snapshots();
   }
 
-  getAllUsersByIds(List ids) {
+  allUsers() {
     return db
         .collection("users")
-        .where(FieldPath.documentId, arrayContains: ids);
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              element.data();
+            }));
   }
 
   // get a user based on their userId
   DocumentReference<Map<String, dynamic>> getUserByUserId(String userId) {
     return db.collection("users").doc(userId);
+  }
+
+  // get a user based on their userId
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserSnapshot(
+      String userId) {
+    return db.collection("users").doc(userId).snapshots();
   }
 
   // Add Friend (user to otherUser)
@@ -283,6 +293,23 @@ class FireBaseUserAPI {
         }
       });
       return "Successfully cancelled friend request!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  // udate bio
+  Future<String> updateBio(String? id, String? bio) async {
+    try {
+      DocumentReference user = db.collection("users").doc(id);
+      user.get().then(((DocumentSnapshot documentSnapshot) async {
+        if (documentSnapshot.exists) {
+          await user.update({BIO: bio});
+        } else {
+          return "User document doesn't exist!";
+        }
+      }));
+      return "Successfully updated bio!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }

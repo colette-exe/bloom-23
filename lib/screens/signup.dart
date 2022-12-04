@@ -1,4 +1,4 @@
-/*
+/* 
     Author: Angelica Nicolette U. Adoptante
     Section: D1L
     Date created: November 27, 2022
@@ -6,9 +6,14 @@
     File Description: Sign Up Page
  */
 
+import 'package:bloom/api/firebase_user_api.dart';
+import 'package:bloom/providers/user_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bloom/providers/auth_provider.dart';
+
+import '../models/user_model.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -18,24 +23,26 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  // controllers
+  TextEditingController fnameController = TextEditingController();
+  TextEditingController lnameController = TextEditingController();
+  TextEditingController unameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController bdayController = TextEditingController();
+  String bday = "";
+  TextEditingController locationController = TextEditingController();
+  TextEditingController pwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    // controllers
-    TextEditingController fnameController = TextEditingController();
-    TextEditingController lnameController = TextEditingController();
-    TextEditingController unameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    String bday = "";
-    TextEditingController locationController = TextEditingController();
-    TextEditingController pwordController = TextEditingController();
+    // final docs =
+    //     User.fromJsonArray(context.read<UserListProvider>().getAllUserNames());
 
+    // form fields -------------------
     final fname = TextFormField(
       key: const Key('fname'),
       controller: fnameController,
-      decoration: const InputDecoration(
-        hintText: "First Name",
-      ),
+      decoration: const InputDecoration(labelText: "First Name"),
       validator: (value) {
         // validator for first name field
         if (value!.isEmpty) {
@@ -53,9 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final lname = TextFormField(
       key: const Key('lname'),
       controller: lnameController,
-      decoration: const InputDecoration(
-        hintText: "Last Name",
-      ),
+      decoration: const InputDecoration(labelText: "Last Name"),
       validator: (value) {
         // validator for last name field
         if (value!.isEmpty) {
@@ -71,17 +76,16 @@ class _SignUpPageState extends State<SignUpPage> {
     );
 
     final uname = TextFormField(
-      key: const Key('lname'),
+      key: const Key('uname'),
       controller: unameController,
       decoration: const InputDecoration(
-        hintText: "username",
+        labelText: "User Name",
       ),
       validator: (value) {
         // validator for last name field
         if (value!.isEmpty) {
           return "Enter your username";
         } else {
-          RegExp re = RegExp(r"");
           return null;
         }
       },
@@ -91,24 +95,40 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
 
-    final bdayField = InputDatePickerFormField(
-      key: const Key('lname'),
-      firstDate: DateTime(1900, 1, 1),
-      lastDate: DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day),
-      onDateSaved: (value) {
-        setState(() {
-          bday = value.toString();
-        });
-      },
-      fieldHintText: "MM/DD/YYYY",
+    final bdayField = TextFormField(
+      controller: bdayController,
+      key: const Key('bday'),
+      decoration: const InputDecoration(labelText: "Birthday (MM/DD/YYYY)"),
+      onTap: (() async {
+        DateTime? date = await showDatePicker(
+            fieldHintText: "Enter birthday",
+            context: context,
+            initialEntryMode: DatePickerEntryMode.calendarOnly,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1800),
+            lastDate: DateTime.now());
+
+        if (date != null) {
+          setState(() {
+            bdayController.text = "${date.month}/${date.day}/${date.year}";
+            bday = bdayController.text;
+          });
+        }
+      }),
+      validator: ((value) {
+        if (bday.isEmpty) {
+          return "Enter your birthday";
+        } else {
+          return null;
+        }
+      }),
     );
 
     final location = TextFormField(
-      key: const Key('lname'),
+      key: const Key('location'),
       controller: locationController,
       decoration: const InputDecoration(
-        hintText: "Location",
+        labelText: "Location",
       ),
       validator: (value) {
         // validator for last name field
@@ -128,12 +148,12 @@ class _SignUpPageState extends State<SignUpPage> {
       key: const Key('email'),
       controller: emailController,
       decoration: const InputDecoration(
-        hintText: "Email",
+        labelText: "Email",
       ),
       // regex for email validation from https://www.abstractapi.com/tools/email-regex-guide/
       validator: (value) {
         RegExp re = RegExp(
-            r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
+            r'^[a-zA-Z0-9.!#$%&’ +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
         if (re.hasMatch(value!) && value.isNotEmpty) {
           return null;
         } else {
@@ -151,15 +171,30 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: pwordController,
       obscureText: true,
       decoration: const InputDecoration(
-        hintText: 'Password',
+        labelText: 'Password',
       ),
       validator: (value) {
-        RegExp re = RegExp(r'.{8,}');
-        if (re.hasMatch(value!)) {
-          return null;
-        } else {
-          return "Password must be at least 8 characters";
+        RegExp re1 = RegExp(r'.{8,}');
+        RegExp re2 = RegExp(r'[a-z]{1,}');
+        RegExp re3 = RegExp(r'[0-9]{1,}');
+        RegExp re4 = RegExp(r'[A-Z]{1,}');
+        RegExp re5 = RegExp(r'\W{1,}');
+        if (re1.hasMatch(value!)) {
+          if (re2.hasMatch(value)) {
+            if (re3.hasMatch(value)) {
+              if (re4.hasMatch(value)) {
+                if (re5.hasMatch(value)) {
+                  return null;
+                }
+                return "Password must have at least one special character.";
+              }
+              return "Password must have at least one uppercase letter.";
+            }
+            return "Password must have at least 1 digit.";
+          }
+          return "Password must have atleast 1 lowercase letter.";
         }
+        return "Password must be at least 8 characters.";
       },
       style: const TextStyle(
         fontFamily: 'Poppins',

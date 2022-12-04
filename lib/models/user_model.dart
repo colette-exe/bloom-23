@@ -15,6 +15,7 @@ class User {
   String lastName;
   String bday;
   String location;
+  String bio;
 
   // lists of string userIds
   List<dynamic> friends;
@@ -29,6 +30,7 @@ class User {
     required this.lastName,
     required this.bday,
     required this.location,
+    required this.bio,
     required this.friends,
     required this.receivedFriendRequests,
     required this.sentFriendRequests,
@@ -44,6 +46,7 @@ class User {
       lastName: json['lastName'],
       bday: json['bday'],
       location: json['location'],
+      bio: json['bio'],
       friends: json['friends'],
       receivedFriendRequests: json['receivedFriendRequests'],
       sentFriendRequests: json['sentFriendRequests'],
@@ -59,6 +62,7 @@ class User {
       'lastName': user.lastName,
       'bday': user.bday,
       'location': user.location,
+      'bio': user.bio,
       'friends': user.friends,
       'receivedFriendRequests': user.receivedFriendRequests,
       'sentFriendRequests': user.sentFriendRequests,

@@ -15,6 +15,7 @@ import 'package:bloom/screens/profile.dart';
 import 'package:bloom/screens/search.dart';
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:bloom/screens/signup.dart';
+import 'package:bloom/screens/todo_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         '/sign-up': (context) => const SignUpPage(),
         '/': (context) => AuthWrapper(),
         '/search': (context) => Search(),
+        '/todos': (context) => const TodoPage(),
       },
       // color: Colors.green.shade600,
       theme: ThemeData(primarySwatch: Colors.green),
@@ -63,7 +65,7 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (context.watch<AuthProvider>().isAuthenticated) {
-      return Profile();
+      return const Profile();
     } else {
       return const Login();
     }
