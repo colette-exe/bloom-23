@@ -10,8 +10,10 @@
     File Description: main
  */
 import 'package:bloom/providers/user_provider.dart';
+import 'package:bloom/screens/friends_page.dart';
 import 'package:bloom/screens/login.dart';
 import 'package:bloom/screens/profile.dart';
+import 'package:bloom/screens/requests.dart';
 import 'package:bloom/screens/search.dart';
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:bloom/screens/signup.dart';
@@ -52,6 +54,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => AuthWrapper(),
         '/search': (context) => Search(),
         '/todos': (context) => const TodoPage(),
+        '/friends': (context) => const FriendsPage(),
+        '/requests': (context) => const RequestsPage(),
       },
       // color: Colors.green.shade600,
       theme: ThemeData(primarySwatch: Colors.green),

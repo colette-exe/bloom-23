@@ -314,4 +314,19 @@ class FireBaseUserAPI {
       return "Failed with error '${e.code}: ${e.message}";
     }
   }
+
+  // Future<dynamic> getFriends(String? id) async {
+  //   try {
+  //     DocumentReference user = db.collection("users").doc(id);
+  //     user.get().then(((DocumentSnapshot documentSnapshot) async {
+  //       if (documentSnapshot.exists) {
+  //         List<String> friends =
+  //             await documentSnapshot.get(FieldPath(const [FRIENDS]));
+  //         return friends;
+  //       }
+  //     }));
+  //   } on FirebaseException catch (e) {
+  //     return "Failed with error '${e.code}: ${e.message}";
+  //   }
+  // }
 }

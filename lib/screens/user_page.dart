@@ -17,7 +17,13 @@ import 'package:bloom/providers/auth_provider.dart';
 class UserPage extends StatefulWidget {
   String regex;
   String uid;
-  UserPage({super.key, required this.regex, required this.uid});
+  String type;
+  UserPage({
+    super.key,
+    required this.regex,
+    required this.uid,
+    required this.type,
+  });
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -127,26 +133,75 @@ class _UserPageState extends State<UserPage> {
                     color: Colors.black87)),
           );
         }
-        return ListView.builder(
-            itemCount: snapshot.data?.docs.length,
-            itemBuilder: ((context, index) {
-              // iterate through users
-              User user = User.fromJson(
-                  snapshot.data?.docs[index].data() as Map<String, dynamic>);
-              // show all users except the current user
-              if (user.userId != widget.uid) {
-                // temporary basis for checking
-                RegExp regex = RegExp(widget.regex, caseSensitive: false);
-                // only return matched displayNames
-                if (regex.hasMatch(user.firstName) ||
-                    regex.hasMatch(user.lastName)) {
+        if (widget.type == 'search') {
+          // for search page
+          return ListView.builder(
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: ((context, index) {
+                // iterate through users
+                User user = User.fromJson(
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                // show all users except the current user
+                if (user.userId != widget.uid) {
+                  // temporary basis for checking
+                  RegExp regex = RegExp(widget.regex, caseSensitive: false);
+                  // only return matched displayNames
+                  if (regex.hasMatch(user.firstName) ||
+                      regex.hasMatch(user.lastName)) {
+                    return Dismissible(
+                        key: Key(user.userId),
+                        onDismissed: (direction) {
+                          // context
+                          //     .read<UserListProvider>()
+                          //     .changeSelectedUser(user);
+                        },
+                        background: Container(
+                          color: Colors.amber,
+                          child: const Icon(Icons.delete),
+                        ),
+                        child: ListTile(
+                          title: Text("${user.firstName} ${user.lastName}",
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black87)),
+                          trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                iconButtonBuilder(context, widget.uid, user)
+                              ]),
+                        ));
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                } else {
+                  return const SizedBox
+                      .shrink(); // learned from https://stackoverflow.com/questions/53455358/how-to-present-an-empty-view-in-flutter
+                }
+              }));
+        } else {
+          return ListView.builder(
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: ((context, index) {
+                // iterate through users
+                User user = User.fromJson(
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                // see if current user is in this user's friends list
+                bool element;
+                // if for friends page, look for the id in the friends list
+                if (widget.type == 'friends') {
+                  element = user.friends.any((e) => e.contains(widget.uid));
+                } else {
+                  // else look in the sentFriendRequests list, since we are looking through each user's sfr list
+                  // if the currently logged in user is in this list, then they receieved a friend request from this user
+                  element = user.sentFriendRequests
+                      .any((e) => e.contains(widget.uid));
+                }
+                if (element) {
                   return Dismissible(
                       key: Key(user.userId),
-                      onDismissed: (direction) {
-                        // context
-                        //     .read<UserListProvider>()
-                        //     .changeSelectedUser(user);
-                      },
+                      onDismissed: (direction) {},
                       background: Container(
                         color: Colors.amber,
                         child: const Icon(Icons.delete),
@@ -167,11 +222,8 @@ class _UserPageState extends State<UserPage> {
                 } else {
                   return const SizedBox.shrink();
                 }
-              } else {
-                return const SizedBox
-                    .shrink(); // learned from https://stackoverflow.com/questions/53455358/how-to-present-an-empty-view-in-flutter
-              }
-            }));
+              }));
+        }
       }),
     );
   }

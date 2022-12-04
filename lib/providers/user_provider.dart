@@ -148,4 +148,10 @@ class UserListProvider with ChangeNotifier {
     print(message);
     notifyListeners();
   }
+
+  // getFriends(String id) async {
+  //   var result = await firebaseService.getFriends(id);
+  //   notifyListeners();
+  //   return result;
+  // }
 }

@@ -4,7 +4,7 @@
     Date created: November 14, 2022 (from Exercise 6)
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
  */
-import 'package:bloom/models/current_user.dart';
+import 'package:bloom/models/screen_arguments.dart';
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:bloom/providers/user_provider.dart';
 import 'package:bloom/screens/user_page.dart';
@@ -23,6 +23,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   TextEditingController bioController = TextEditingController();
   bool readOnly = true;
+  List lst = [];
+
   Widget buttonWidget(BuildContext context, bioController, userId) {
     if (readOnly) {
       // edit button
@@ -54,7 +56,6 @@ class _ProfileState extends State<Profile> {
             context
                 .read<UserListProvider>()
                 .changeBio(userId, bioController.text);
-            (context as Element).reassemble();
           });
         },
         style: ElevatedButton.styleFrom(
@@ -75,70 +76,27 @@ class _ProfileState extends State<Profile> {
 
     return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
       SizedBox(
-        width: 200,
-        height: 200,
-        child: ListView(children: [
-          TextField(
-            readOnly: readOnly,
-            controller: bioController,
-            style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-                fontFamily: 'Poppins',
-                color: Colors.black87),
-            decoration: const InputDecoration(border: OutlineInputBorder()),
-          )
-        ]),
-      ),
+          width: 500,
+          height: 100,
+          child: DecoratedBox(
+              decoration: const BoxDecoration(color: Colors.grey),
+              child: TextField(
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
+                maxLines: 5,
+                readOnly: readOnly,
+                controller: bioController,
+                style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Poppins',
+                    color: Colors.black87),
+                decoration: const InputDecoration(border: OutlineInputBorder()),
+              ))),
       // check buttons to display
       buttonWidget(context, bioController, userId),
     ]);
-  }
-
-  Widget friendsWidget(BuildContext context, lst) {
-    if (lst.length > 0) {
-      return Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text("FRIENDS",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w200,
-                        fontFamily: 'Poppins',
-                        letterSpacing: 1.0,
-                        color: Colors.black54)),
-                SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      // try making this a streambuilder instead
-                      itemCount: lst.length,
-                      shrinkWrap: true,
-                      itemBuilder: ((context, index) {
-                        var user = context
-                            .watch<UserListProvider>()
-                            .getNameByUserId(lst[index]);
-
-                        print("in profile: $user");
-                        return Text("${lst[index]}",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w200,
-                                fontFamily: 'Poppins',
-                                letterSpacing: 1.0,
-                                color: Colors.blueGrey.shade800));
-                      }),
-                    ))
-              ]));
-    } else {
-      return Text("No Friends Yet",
-          style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Poppins',
-              color: Colors.blue.shade700));
-    }
   }
 
   @override
@@ -148,8 +106,8 @@ class _ProfileState extends State<Profile> {
     DocumentReference userDoc = context
         .watch<UserListProvider>()
         .getUserById(context.watch<AuthProvider>().user!.uid);
-    CurrentUser uid = CurrentUser(userDoc.id);
-
+    // ScreenArguments uid = ScreenArguments(userDoc.id, []);
+    String uid = userDoc.id;
     // final args = ModalRoute.of(context)!.settings.arguments as InputName;
     return Scaffold(
       drawer: Drawer(
@@ -169,6 +127,40 @@ class _ProfileState extends State<Profile> {
             ),
             ListTile(
                 title: const Text(
+                  'Friends',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 1,
+                      color: Colors.black),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/friends',
+                      arguments: ScreenArguments(
+                        uid,
+                      ));
+                }),
+            ListTile(
+                title: const Text(
+                  'Friend Requests',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
+                      letterSpacing: 1,
+                      color: Colors.black),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/requests',
+                      arguments: ScreenArguments(
+                        uid,
+                      ));
+                }),
+            ListTile(
+                title: const Text(
                   'Search Users',
                   style: TextStyle(
                       fontSize: 14,
@@ -179,7 +171,10 @@ class _ProfileState extends State<Profile> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/search', arguments: uid);
+                  Navigator.pushNamed(context, '/search',
+                      arguments: ScreenArguments(
+                        uid,
+                      ));
                 }),
             ListTile(
                 title: const Text(
@@ -250,6 +245,7 @@ class _ProfileState extends State<Profile> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   Map<String, dynamic> data =
                       snapshot.data!.data() as Map<String, dynamic>;
+                  lst = data['friends'];
                   return SizedBox(
                       height: 800,
                       child: Column(
@@ -298,7 +294,9 @@ class _ProfileState extends State<Profile> {
                                 ]),
                           ]),
                           bioWidget(context, data['bio'], data['userId']),
-                          friendsWidget(context, data['friends']),
+
+                          // friendsWidget(
+                          // context, data['friends'], data['userId']),
                         ],
                       ));
                 }
