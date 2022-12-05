@@ -16,7 +16,9 @@ class TodoModal extends StatelessWidget {
   String type;
   String uid;
   // int todoIndex;
-  TextEditingController _formFieldController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController statController = TextEditingController();
 
   TodoModal({super.key, required this.type, required this.uid});
 
@@ -46,15 +48,37 @@ class TodoModal extends StatelessWidget {
             "Are you sure you want to delete '${context.read<TodoListProvider>().selected.title}'?",
           );
         }
-      // Edit and add will have input field in them
+      // add
       default:
-        return TextField(
-          controller: _formFieldController,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            // hintText: todoIndex != -1 ? todoItems[todoIndex].title : '',
+        return Column(mainAxisSize: MainAxisSize.min, children: [
+          // title
+          TextField(
+            controller: titleController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              // hintText: todoIndex != -1 ? todoItems[todoIndex].title : '',
+              hintText: "Enter title",
+            ),
           ),
-        );
+          // description
+          TextField(
+            controller: descController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              // hintText: todoIndex != -1 ? todoItems[todoIndex].title : '',
+              hintText: "Enter description",
+            ),
+          ),
+          // status
+          TextField(
+            controller: statController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              // hintText: todoIndex != -1 ? todoItems[todoIndex].title : '',
+              hintText: "Enter status",
+            ),
+          ),
+        ]);
     }
   }
 
@@ -68,9 +92,9 @@ class TodoModal extends StatelessWidget {
             {
               // Instantiate a todo objeect to be inserted, default userID will be 1, the id will be the next id in the list
               Todo temp = Todo(
-                  title: _formFieldController.text,
-                  description: "new todo",
-                  status: "ongoing",
+                  title: titleController.text,
+                  description: descController.text,
+                  status: statController.text,
                   history: "created",
                   ownerId: uid);
 
