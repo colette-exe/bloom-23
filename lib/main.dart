@@ -9,6 +9,7 @@
         step-by-step, little-by-little :>
     File Description: main
  */
+import 'package:bloom/providers/todo_provider.dart';
 import 'package:bloom/providers/user_provider.dart';
 import 'package:bloom/screens/friends_page.dart';
 import 'package:bloom/screens/login.dart';
@@ -35,6 +36,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: ((context) => UserListProvider())),
         ChangeNotifierProvider(create: ((context) => AuthProvider())),
+        ChangeNotifierProvider(create: ((context) => TodoListProvider())),
       ],
       child: const MyApp(),
     ),

@@ -27,3 +27,5 @@ A shared todo app where you can see your friends' todos. Bloom together as all o
 [6] https://firebase.google.com/docs/firestore/query-data/get-data#get_multiple_documents_from_a_collection
 [7] https://stackoverflow.com/questions/45900387/multi-line-textfield-in-flutter
 [8] https://medium.com/flutter-community/useful-list-methods-in-dart-6e173cac803d
+[9] https://api.flutter.dev/flutter/widgets/GridView-class.html
+[10] https://www.kindacode.com/article/flutter-gridtile-examples/

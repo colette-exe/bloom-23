@@ -181,7 +181,9 @@ class _ProfileState extends State<Profile> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/todos'); // make a todo page
+                  Navigator.pushNamed(context, '/todos',
+                      arguments:
+                          ScreenArguments(uid, null)); // make a todo page
                 }),
             ListTile(
                 title: const Text(
@@ -238,7 +240,6 @@ class _ProfileState extends State<Profile> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   Map<String, dynamic> data =
                       snapshot.data!.data() as Map<String, dynamic>;
-                  lst = data['friends'];
                   return SizedBox(
                       height: 800,
                       child: Column(
