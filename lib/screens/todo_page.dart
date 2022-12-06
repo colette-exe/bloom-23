@@ -60,45 +60,150 @@ class _TodoPageState extends State<TodoPage> {
           }
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
+                crossAxisCount: 2),
+            padding: const EdgeInsets.all(10),
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (BuildContext context, int index) {
               Todo todo = Todo.fromJson(
                   snapshot.data?.docs[index].data() as Map<String, dynamic>);
-              return Dismissible(
-                  key: Key("${todo.id}"),
-                  onDismissed: (direction) {},
-                  background: Container(
-                    color: Colors.amber,
-                    child: const Icon(Icons.delete),
-                  ),
-                  child: Card(
-                      margin: const EdgeInsets.all(5),
-                      child: GridTile(
-                        header: GridTileBar(
-                            leading: Text(todo.title,
+
+              // check if currently logged in user is the owner of the todo or a friend of the owner
+              bool owner = (todo.ownerId == uid);
+              bool friend =
+                  todo.ownerFriends!.any((element) => element.contains(uid));
+              if (owner) {
+                return Dismissible(
+                    key: Key("${todo.id}"),
+                    onDismissed: (direction) {
+                      context.read<TodoListProvider>().changeSelectedTodo(todo);
+                      context.read<TodoListProvider>().deleteTodo();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('${todo.title} deleted')));
+                    },
+                    background: Container(
+                      color: Colors.amber,
+                      child: const Icon(Icons.delete),
+                    ),
+                    child: Card(
+                        margin: const EdgeInsets.all(5),
+                        child: GridTile(
+                          header: GridTileBar(
+                            title: Text(todo.title,
                                 style: const TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87)),
+                            subtitle: Text(todo.history![0],
+                                style: const TextStyle(
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w300,
                                     fontFamily: 'Poppins',
-                                    color: Colors.black87))),
-                        footer: GridTileBar(
-                          leading: Text("STATUS: ${todo.status}",
+                                    color: Colors.black54)),
+                          ),
+                          footer: GridTileBar(
+                            leading: Text("STATUS: ${todo.status}",
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w200,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87)),
+                            trailing: IconButton(
+                                color: Colors.lightGreen,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      context
+                                          .read<TodoListProvider>()
+                                          .changeSelectedTodo(todo);
+                                      return TodoModal(
+                                          type: 'Edit-owner', uid: uid);
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.edit)),
+                          ),
+                          child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 65, bottom: 60, left: 20, right: 20),
+                              height: 100,
+                              child: SizedBox(
+                                  height: 80,
+                                  child: ListView(
+                                    children: [
+                                      for (var word in [todo.description])
+                                        Text(word,
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                                fontFamily: 'Poppins',
+                                                color: Colors.black87))
+                                    ],
+                                  ))),
+                        )));
+              } else if (friend) {
+                return Card(
+                    margin: const EdgeInsets.all(5),
+                    child: GridTile(
+                      header: GridTileBar(
+                          title: Text(todo.title,
                               style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w200,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
                                   color: Colors.black87)),
-                          trailing: Row(children: const [Text("Buttons")]),
-                        ),
-                        child: Center(
-                            child: Text(todo.description,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300,
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black87))),
-                      )));
+                          subtitle: Text(todo.history![0],
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black54))),
+                      footer: GridTileBar(
+                        leading: Text("STATUS: ${todo.status}",
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: 'Poppins',
+                                color: Colors.black87)),
+                        trailing: IconButton(
+                            color: Colors.lightGreen,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  context
+                                      .read<TodoListProvider>()
+                                      .changeSelectedTodo(todo);
+                                  return TodoModal(
+                                      type: 'Edit-friend', uid: uid);
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.edit)),
+                      ),
+                      child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 65, bottom: 60, left: 20, right: 20),
+                          height: 100,
+                          child: SizedBox(
+                              height: 80,
+                              child: ListView(
+                                children: [
+                                  for (var word in [todo.description])
+                                    Text(word,
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300,
+                                            fontFamily: 'Poppins',
+                                            color: Colors.black87))
+                                ],
+                              ))),
+                    ));
+              } else {
+                return const SizedBox.shrink();
+              }
             },
           );
         }),
@@ -110,7 +215,7 @@ class _TodoPageState extends State<TodoPage> {
             builder: (BuildContext context) => TodoModal(type: 'Add', uid: uid),
           );
         },
-        child: const Icon(Icons.add_outlined),
+        child: const Icon(Icons.note_add_outlined),
       ),
     );
   }

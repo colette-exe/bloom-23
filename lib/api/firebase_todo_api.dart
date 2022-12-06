@@ -15,7 +15,36 @@ class FirebaseTodoAPI {
     try {
       final docRef = await db.collection("todos").add(todo);
       await db.collection("todos").doc(docRef.id).update({'id': docRef.id});
+      // update ownerFriends
+      docRef.get().then((DocumentSnapshot documentSnapshot) async {
+        if (documentSnapshot.exists) {
+          String ownerId = documentSnapshot.get(FieldPath(const ['ownerId']));
+          try {
+            final userRef = db.collection("users").doc(ownerId);
+            userRef.get().then((value) async {
+              if (value.exists) {
+                List ownerFriends = value.get(FieldPath(const ['friends']));
+                String name = value.get(FieldPath(const ['userName']));
+                var now = DateTime.now();
+                var date =
+                    "${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}";
+                await docRef.update({
+                  'ownerFriends': ownerFriends,
+                  'history': ['created by $name - $date']
+                });
 
+                return "Successfully added todo!";
+              } else {
+                return "Todo owner not found.";
+              }
+            });
+          } on FirebaseException catch (e) {
+            return "Failed with error '${e.code}: ${e.message}";
+          }
+        } else {
+          return "Todo not found.";
+        }
+      });
       return "Successfully added todo!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
@@ -24,6 +53,60 @@ class FirebaseTodoAPI {
 
   Stream<QuerySnapshot> getAllTodos() {
     return db.collection("todos").snapshots();
+  }
+
+  Future<String> editTodo(
+      String? id, String? status, String title, String description) async {
+    try {
+      final docRef = db.collection("todos").doc(id);
+      if (status != null) {
+        // format date
+        var now = DateTime.now();
+        var date =
+            "${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}";
+        docRef.get().then((docValue) async {
+          if (docValue.exists) {
+            List history = docValue.get(FieldPath(const ['history']));
+            String ownerId = docValue.get(FieldPath(const ['ownerId']));
+            final userRef = db.collection("users").doc(ownerId);
+            userRef.get().then((value) async {
+              String name = value.get(FieldPath(const ['userName']));
+              history.insert(0, 'edited by $name - $date');
+              await db.collection("todos").doc(docRef.id).update({
+                'status': status,
+                'title': title,
+                'description': description,
+                'history': history
+              });
+            });
+          }
+        });
+        return "Owner successfully edited todo!";
+      } else {
+        // friend editing
+        var now = DateTime.now();
+        var date =
+            "${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}";
+        docRef.get().then((value) async {
+          if (value.exists) {
+            final userRef = db.collection("users").doc(id);
+            userRef.get().then((value) async {
+              List history = value.get(FieldPath(const ['history']));
+              String name = value.get(FieldPath(const ['userName']));
+              history.insert(0, 'edited by $name - $date');
+              await db.collection("todos").doc(docRef.id).update({
+                'title': title,
+                'description': description,
+                'history': history
+              });
+            });
+          }
+        });
+        return "A friend successfully edited todo!";
+      }
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
   }
 
   Future<String> deleteTodo(String? id) async {

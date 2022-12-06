@@ -13,17 +13,19 @@ class Todo {
   String title;
   String description;
   String status; // ongoing, paused, completed
-  String history;
+  List? history;
 
   String ownerId;
+  List? ownerFriends;
 
   Todo(
       {this.id,
       required this.title,
       required this.description,
       required this.status,
-      required this.history,
-      required this.ownerId});
+      this.history,
+      required this.ownerId,
+      this.ownerFriends});
 
   // fetch todo info from database
   factory Todo.fromJson(Map<String, dynamic> json) {
@@ -33,7 +35,8 @@ class Todo {
         description: json['description'],
         status: json['status'],
         history: json['history'],
-        ownerId: json['ownerId']);
+        ownerId: json['ownerId'],
+        ownerFriends: json['ownerFriends']);
   }
   // from object to json
   Map<String, dynamic> toJson(Todo todo) {
@@ -43,7 +46,8 @@ class Todo {
       'description': todo.description,
       'status': todo.status,
       'history': todo.history,
-      'ownerId': todo.ownerId
+      'ownerId': todo.ownerId,
+      'ownerFriends': todo.ownerFriends
     };
   }
 

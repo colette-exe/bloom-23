@@ -18,7 +18,10 @@ class AuthProvider with ChangeNotifier {
     authService.getUser().listen((User? newUser) {
       // get user
       userObj = newUser;
-      print('AuthProvider - FirebaseAuth - onAuthStateChanged - $newUser');
+      if (newUser != null) {
+        print(
+            'AuthProvider - FirebaseAuth - onAuthStateChanged - ${newUser.email}');
+      }
       notifyListeners();
     }, onError: (e) {
       // provide a more useful error

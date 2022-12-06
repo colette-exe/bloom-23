@@ -18,7 +18,8 @@ class FireBaseUserAPI {
   // adding user after signing up
   Future<String> addUser(Map<String, dynamic> user) async {
     try {
-      await db.collection("users").add(user);
+      final DocumentReference userRef = await db.collection("users").add(user);
+      await db.collection("users").doc(userRef.id).set({'bio': ""});
 
       return "Successfully signed up!";
     } on FirebaseException catch (e) {
