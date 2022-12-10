@@ -86,6 +86,7 @@ class _TodoPageState extends State<TodoPage> {
                       child: const Icon(Icons.delete),
                     ),
                     child: Card(
+                        color: Colors.green,
                         margin: const EdgeInsets.all(5),
                         child: GridTile(
                           header: GridTileBar(
@@ -145,6 +146,7 @@ class _TodoPageState extends State<TodoPage> {
                         )));
               } else if (friend) {
                 return Card(
+                    color: Colors.blue,
                     margin: const EdgeInsets.all(5),
                     child: GridTile(
                       header: GridTileBar(

@@ -6,6 +6,7 @@
     File Description: User-related operations
  */
 import 'package:bloom/api/firebase_auth_api.dart';
+import 'package:bloom/api/firebase_todo_api.dart';
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +17,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserListProvider with ChangeNotifier {
   late FireBaseUserAPI firebaseService;
   late FirebaseAuthAPI firebaseAuthService;
+  late FirebaseTodoAPI firebaseTodoAPI;
   late Stream<QuerySnapshot> _userStream;
   User? _selectedUser;
 
   UserListProvider() {
     firebaseService = FireBaseUserAPI();
+    firebaseTodoAPI = FirebaseTodoAPI();
     fetchUsers();
   }
 
@@ -117,15 +120,29 @@ class UserListProvider with ChangeNotifier {
   }
 
   void unfriend(String id) async {
-    String message = await firebaseService.unfriend(id, _selectedUser!.userId);
-    print(message);
+    String message1 = await firebaseService.unfriend(id, _selectedUser!.userId);
+    // update todos
+    String message2 =
+        await firebaseTodoAPI.unfriendUpdate(id, _selectedUser!.userId);
+    String message3 =
+        await firebaseTodoAPI.unfriendUpdate(_selectedUser!.userId, id);
+    print(message1);
+    print(message2);
+    print(message3);
     notifyListeners();
   }
 
   void acceptRequest(String id) async {
-    String message =
+    String message1 =
         await firebaseService.acceptRequest(id, _selectedUser!.userId);
-    print(message);
+    // update todos
+    String message2 =
+        await firebaseTodoAPI.acceptUpdate(id, _selectedUser!.userId);
+    String message3 =
+        await firebaseTodoAPI.acceptUpdate(_selectedUser!.userId, id);
+    print(message1);
+    print(message2);
+    print(message3);
     notifyListeners();
   }
 
@@ -148,10 +165,4 @@ class UserListProvider with ChangeNotifier {
     print(message);
     notifyListeners();
   }
-
-  // getFriends(String id) async {
-  //   var result = await firebaseService.getFriends(id);
-  //   notifyListeners();
-  //   return result;
-  // }
 }

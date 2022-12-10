@@ -118,4 +118,86 @@ class FirebaseTodoAPI {
       return "Failed with error '${e.code}: ${e.message}";
     }
   }
+
+  // update all of userId's todos' ownerFriends list
+  // remove otherId
+  Future<String> unfriendUpdate(String? userId, String? otherId) async {
+    WriteBatch batch = db.batch();
+    try {
+      final userRef = db.collection("users").doc(userId);
+      List friends = [];
+      userRef.get().then((user) async {
+        if (user.exists) {
+          friends = user.get(FieldPath(const ['friends']));
+          friends.remove(otherId);
+        }
+        try {
+          db
+              .collection("todos")
+              .where("ownerId", isEqualTo: userId)
+              .get()
+              .then((todo) async {
+            todo.docs.forEach((element) {
+              try {
+                // element.data().update("ownerFriends", (value) => friends);
+                batch.update(element.reference, {"ownerFriends": friends});
+              } on FirebaseException catch (e) {
+                print("Failed with error '${e.code}: ${e.message}");
+                return;
+              }
+            });
+            return batch.commit();
+          });
+          return "Successfully updatedTodo!";
+        } on FirebaseException catch (e) {
+          return "Failed with error '${e.code}: ${e.message}";
+        }
+      });
+      return "Successfully updatedTodo!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  // update all of userId's todos' ownerFriends list
+  // make sure otherId is included to the list
+  Future<String> acceptUpdate(String? userId, String? otherId) async {
+    WriteBatch batch = db.batch();
+    try {
+      final userRef = db.collection("users").doc(userId);
+      List friends = [];
+      userRef.get().then((user) async {
+        if (user.exists) {
+          friends = user.get(FieldPath(const ['friends']));
+          if (!friends.any((element) => element.contains(otherId))) {
+            friends.add(otherId);
+          }
+        }
+        try {
+          db
+              .collection("todos")
+              .where("ownerId", isEqualTo: userId)
+              .get()
+              .then((todo) async {
+            todo.docs.forEach((element) {
+              try {
+                // element.data().update("ownerFriends", (value) => friends);
+                batch.update(element.reference, {"ownerFriends": friends});
+              } on FirebaseException catch (e) {
+                print("Failed with error '${e.code}: ${e.message}");
+                return;
+              }
+            });
+            return batch.commit();
+          });
+          return "Successfully updatedTodo!";
+        } on FirebaseException catch (e) {
+          return "Failed with error '${e.code}: ${e.message}";
+        }
+      });
+      return "Successfully updatedTodo!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
 }
