@@ -15,6 +15,7 @@ import 'package:bloom/providers/todo_provider.dart';
 class TodoModal extends StatelessWidget {
   String type;
   String uid;
+  String? status;
   // int todoIndex;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -23,7 +24,7 @@ class TodoModal extends StatelessWidget {
   bool? paused = false;
   bool? completed = false;
 
-  TodoModal({super.key, required this.type, required this.uid});
+  TodoModal({super.key, required this.type, required this.uid, this.status});
 
   // Method to show the title of the modal depending on the functionality
   Text _buildTitle() {
@@ -56,6 +57,13 @@ class TodoModal extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
                 color: Colors.black87));
+      case 'Toggle-status':
+        return const Text("Todo Status",
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+                color: Colors.black87));
       default:
         return const Text("");
     }
@@ -63,6 +71,11 @@ class TodoModal extends StatelessWidget {
 
   // Method to build the content or body depending on the functionality
   Widget _buildContent(BuildContext context) {
+    if (status == 'completed') {
+      status = 'ongoing';
+    } else {
+      status = 'completed';
+    }
     // Use context.read to get the last updated list of todos
     // List<Todo> todoItems = context.read<TodoListProvider>().todo;
 
@@ -152,6 +165,7 @@ class TodoModal extends StatelessWidget {
                             fontWeight: FontWeight.w300,
                             fontFamily: 'Poppins',
                             color: Colors.black87)),
+                    // status
                     TextField(
                       controller: statController,
                       decoration: const InputDecoration(
@@ -166,7 +180,7 @@ class TodoModal extends StatelessWidget {
                     ),
                   ]));
         }
-      default:
+      case "Edit-friend":
         {
           // get title and descriptions from todo data
           Todo todo = context.read<TodoListProvider>().selected;
@@ -209,6 +223,15 @@ class TodoModal extends StatelessWidget {
                     ),
                   ]));
         }
+      default:
+        return Text(
+          "Mark '${context.read<TodoListProvider>().selected.title}' as $status?",
+          style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+              fontFamily: 'Poppins',
+              color: Colors.black87),
+        );
     }
   }
 
@@ -216,6 +239,9 @@ class TodoModal extends StatelessWidget {
     String buttonText = type;
     if (type == 'Edit-owner' || type == 'Edit-friend') {
       buttonText = 'Edit';
+    }
+    if (type == 'Toggle-status') {
+      buttonText = 'Yes';
     }
     // List<Todo> todoItems = context.read<TodoListProvider>().todo;
     return TextButton(
@@ -260,6 +286,12 @@ class TodoModal extends StatelessWidget {
             case 'Delete':
               {
                 context.read<TodoListProvider>().deleteTodo();
+                Navigator.of(context).pop();
+                break;
+              }
+            case 'Toggle-status':
+              {
+                context.read<TodoListProvider>().toggleStatus();
                 Navigator.of(context).pop();
                 break;
               }

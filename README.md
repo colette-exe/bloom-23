@@ -30,3 +30,4 @@ A shared todo app where you can see your friends' todos. Bloom together as all o
 [9] https://api.flutter.dev/flutter/widgets/GridView-class.html
 [10] https://www.kindacode.com/article/flutter-gridtile-examples/
 [11] https://firebase.google.com/docs/firestore/query-data/get-data#dart_5
+[12] https://stackoverflow.com/questions/65049133/struggling-to-update-multiple-documents-at-once-with-flutter-cloud-firestore

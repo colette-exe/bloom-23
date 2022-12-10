@@ -71,6 +71,14 @@ class _TodoPageState extends State<TodoPage> {
               bool owner = (todo.ownerId == uid);
               bool friend =
                   todo.ownerFriends!.any((element) => element.contains(uid));
+              Widget button;
+              if (todo.status == 'ongoing') {
+                // mark complete
+                button = const Icon(Icons.check_box_rounded);
+              } else {
+                // mark ongoing
+                button = const Icon(Icons.indeterminate_check_box_rounded);
+              }
               if (owner) {
                 return Dismissible(
                     key: Key("${todo.id}"),
@@ -104,28 +112,48 @@ class _TodoPageState extends State<TodoPage> {
                                     color: Colors.black54)),
                           ),
                           footer: GridTileBar(
-                            leading: Text("STATUS: ${todo.status}",
-                                style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w200,
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black87)),
-                            trailing: IconButton(
-                                color: Colors.lightGreen,
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      context
-                                          .read<TodoListProvider>()
-                                          .changeSelectedTodo(todo);
-                                      return TodoModal(
-                                          type: 'Edit-owner', uid: uid);
-                                    },
-                                  );
-                                },
-                                icon: const Icon(Icons.edit)),
-                          ),
+                              leading: Text("STATUS: ${todo.status}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w200,
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black87)),
+                              trailing: Row(
+                                children: [
+                                  IconButton(
+                                      color: Colors.lightGreen,
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            context
+                                                .read<TodoListProvider>()
+                                                .changeSelectedTodo(todo);
+                                            return TodoModal(
+                                                type: 'Toggle-status',
+                                                uid: uid,
+                                                status: todo.status);
+                                          },
+                                        );
+                                      },
+                                      icon: button),
+                                  IconButton(
+                                      color: Colors.lightGreen,
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            context
+                                                .read<TodoListProvider>()
+                                                .changeSelectedTodo(todo);
+                                            return TodoModal(
+                                                type: 'Edit-owner', uid: uid);
+                                          },
+                                        );
+                                      },
+                                      icon: const Icon(Icons.edit)),
+                                ],
+                              )),
                           child: Container(
                               padding: const EdgeInsets.only(
                                   top: 65, bottom: 60, left: 20, right: 20),
@@ -163,28 +191,48 @@ class _TodoPageState extends State<TodoPage> {
                                   fontFamily: 'Poppins',
                                   color: Colors.black54))),
                       footer: GridTileBar(
-                        leading: Text("STATUS: ${todo.status}",
-                            style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w200,
-                                fontFamily: 'Poppins',
-                                color: Colors.black87)),
-                        trailing: IconButton(
-                            color: Colors.lightGreen,
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  context
-                                      .read<TodoListProvider>()
-                                      .changeSelectedTodo(todo);
-                                  return TodoModal(
-                                      type: 'Edit-friend', uid: uid);
-                                },
-                              );
-                            },
-                            icon: const Icon(Icons.edit)),
-                      ),
+                          leading: Text("STATUS: ${todo.status}",
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w200,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black87)),
+                          trailing: Row(
+                            children: [
+                              IconButton(
+                                  color: Colors.lightGreen,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        context
+                                            .read<TodoListProvider>()
+                                            .changeSelectedTodo(todo);
+                                        return TodoModal(
+                                            type: 'Toggle-status',
+                                            uid: uid,
+                                            status: todo.status);
+                                      },
+                                    );
+                                  },
+                                  icon: button),
+                              IconButton(
+                                  color: Colors.lightGreen,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        context
+                                            .read<TodoListProvider>()
+                                            .changeSelectedTodo(todo);
+                                        return TodoModal(
+                                            type: 'Edit-friend', uid: uid);
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(Icons.edit)),
+                            ],
+                          )),
                       child: Container(
                           padding: const EdgeInsets.only(
                               top: 65, bottom: 60, left: 20, right: 20),

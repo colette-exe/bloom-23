@@ -200,4 +200,26 @@ class FirebaseTodoAPI {
       return "Failed with error '${e.code}: ${e.message}";
     }
   }
+
+  Future<String> completeTodo(String? id) async {
+    try {
+      final todoRef = db.collection("todos").doc(id);
+      todoRef.get().then((value) async {
+        if (value.exists) {
+          String status = value.get(FieldPath(const ['status']));
+          if (status == 'ongoing') {
+            status = 'completed';
+          } else {
+            status = 'ongoing';
+          }
+          await db.collection("todos").doc(id).update({'status': status});
+        } else {
+          return "Todo not found.";
+        }
+      });
+      return "Changed status to completed!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
 }
