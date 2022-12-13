@@ -40,7 +40,7 @@ class _LoginState extends State<Login> {
     );
     final loginButton = Padding(
       key: const Key('loginButton'),
-      padding: const EdgeInsets.only(left: 200, right: 200, top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.green,
@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
 
     final signUpButton = Padding(
       key: const Key('signUpButton'),
-      padding: const EdgeInsets.only(left: 200, right: 200, top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.green,

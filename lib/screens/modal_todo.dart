@@ -20,6 +20,7 @@ class TodoModal extends StatelessWidget {
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController statController = TextEditingController();
+  TextEditingController deadlineController = TextEditingController();
   bool? ongoing = false;
   bool? paused = false;
   bool? completed = false;
@@ -61,6 +62,13 @@ class TodoModal extends StatelessWidget {
         return const Text("Todo Status",
             style: TextStyle(
                 fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+                color: Colors.black87));
+      case 'View':
+        return const Text("View Todo",
+            style: TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
                 color: Colors.black87));
@@ -106,7 +114,7 @@ class TodoModal extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.w300,
                   fontFamily: 'Poppins',
-                  color: Colors.black54),
+                  color: Colors.black87),
             ),
             // description
             TextField(
@@ -120,8 +128,37 @@ class TodoModal extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w300,
                   fontFamily: 'Poppins',
-                  color: Colors.black54),
+                  color: Colors.black87),
             ),
+            TextFormField(
+              controller: deadlineController,
+              key: const Key('deadline'),
+              decoration: const InputDecoration(
+                labelText: "Deadline",
+                labelStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: 'Poppins',
+                    color: Colors.black54),
+              ),
+              onTap: (() async {
+                DateTime? date = await showDatePicker(
+                    fieldHintText: "Enter deadline",
+                    context: context,
+                    initialEntryMode: DatePickerEntryMode.calendarOnly,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2050));
+
+                if (date == null) {
+                  deadlineController.text =
+                      "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
+                } else {
+                  deadlineController.text =
+                      "${date.month}/${date.day}/${date.year}";
+                }
+              }),
+            )
           ]);
         }
       case 'Edit-owner':
@@ -131,6 +168,7 @@ class TodoModal extends StatelessWidget {
           titleController.text = todo.title;
           descController.text = todo.description;
           statController.text = todo.status;
+          deadlineController.text = todo.deadline;
 
           return SizedBox(
               height: 300,
@@ -178,6 +216,35 @@ class TodoModal extends StatelessWidget {
                           fontFamily: 'Poppins',
                           color: Colors.black87),
                     ),
+                    TextFormField(
+                      controller: deadlineController,
+                      key: const Key('deadline'),
+                      decoration: const InputDecoration(
+                        labelText: "Deadline",
+                        labelStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            fontFamily: 'Poppins',
+                            color: Colors.black54),
+                      ),
+                      onTap: (() async {
+                        DateTime? date = await showDatePicker(
+                            fieldHintText: "Enter deadline",
+                            context: context,
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2050));
+
+                        if (date == null) {
+                          deadlineController.text =
+                              "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
+                        } else {
+                          deadlineController.text =
+                              "${date.month}/${date.day}/${date.year}";
+                        }
+                      }),
+                    ),
                   ]));
         }
       case "Edit-friend":
@@ -221,6 +288,73 @@ class TodoModal extends StatelessWidget {
                           fontFamily: 'Poppins',
                           color: Colors.black87),
                     ),
+                    TextFormField(
+                      controller: deadlineController,
+                      key: const Key('deadline'),
+                      decoration: const InputDecoration(
+                        labelText: "Deadline",
+                        labelStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            fontFamily: 'Poppins',
+                            color: Colors.black54),
+                      ),
+                      onTap: (() async {
+                        DateTime? date = await showDatePicker(
+                            fieldHintText: "Enter deadline",
+                            context: context,
+                            initialEntryMode: DatePickerEntryMode.calendarOnly,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2050));
+
+                        if (date == null) {
+                          deadlineController.text =
+                              "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
+                        } else {
+                          deadlineController.text =
+                              "${date.month}/${date.day}/${date.year}";
+                        }
+                      }),
+                    )
+                  ]));
+        }
+      case 'View':
+        {
+          Todo todo = context.read<TodoListProvider>().selected;
+
+          return SizedBox(
+              height: 300,
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // title
+                    Text(
+                      todo.title,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                          color: Colors.black87),
+                    ),
+                    // description
+                    Text(
+                      todo.description,
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Poppins',
+                          color: Colors.black87),
+                    ),
+                    Text(
+                      todo.history?[0],
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Poppins',
+                          color: Colors.black87),
+                    ),
                   ]));
         }
       default:
@@ -243,6 +377,9 @@ class TodoModal extends StatelessWidget {
     if (type == 'Toggle-status') {
       buttonText = 'Yes';
     }
+    if (type == 'View') {
+      buttonText = 'Done';
+    }
     // List<Todo> todoItems = context.read<TodoListProvider>().todo;
     return TextButton(
         onPressed: () {
@@ -256,7 +393,8 @@ class TodoModal extends StatelessWidget {
                     status: "ongoing",
                     ownerId: uid,
                     history: [],
-                    ownerFriends: []);
+                    ownerFriends: [],
+                    deadline: deadlineController.text);
 
                 context.read<TodoListProvider>().addTodo(temp);
 
@@ -292,6 +430,11 @@ class TodoModal extends StatelessWidget {
             case 'Toggle-status':
               {
                 context.read<TodoListProvider>().toggleStatus();
+                Navigator.of(context).pop();
+                break;
+              }
+            case 'View':
+              {
                 Navigator.of(context).pop();
                 break;
               }

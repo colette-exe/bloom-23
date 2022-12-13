@@ -58,12 +58,13 @@ class _TodoPageState extends State<TodoPage> {
                       color: Colors.black87)),
             );
           }
+
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             padding: const EdgeInsets.all(10),
             itemCount: snapshot.data?.docs.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (context, int index) {
               Todo todo = Todo.fromJson(
                   snapshot.data?.docs[index].data() as Map<String, dynamic>);
 
@@ -112,48 +113,58 @@ class _TodoPageState extends State<TodoPage> {
                                     color: Colors.black54)),
                           ),
                           footer: GridTileBar(
-                              leading: Text("STATUS: ${todo.status}",
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w200,
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black87)),
-                              trailing: Row(
-                                children: [
-                                  IconButton(
-                                      color: Colors.lightGreen,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            context
-                                                .read<TodoListProvider>()
-                                                .changeSelectedTodo(todo);
-                                            return TodoModal(
-                                                type: 'Toggle-status',
-                                                uid: uid,
-                                                status: todo.status);
-                                          },
+                              leading: Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          context
+                                              .read<TodoListProvider>()
+                                              .changeSelectedTodo(todo);
+                                          return TodoModal(
+                                              type: 'View',
+                                              uid: uid,
+                                              status: todo.status);
+                                        });
+                                  },
+                                  icon: const Icon(
+                                      Icons.remove_red_eye_outlined)),
+                              IconButton(
+                                  color: Colors.lightGreen,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        context
+                                            .read<TodoListProvider>()
+                                            .changeSelectedTodo(todo);
+                                        return TodoModal(
+                                          type: 'Toggle-status',
+                                          uid: uid,
                                         );
                                       },
-                                      icon: button),
-                                  IconButton(
-                                      color: Colors.lightGreen,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            context
-                                                .read<TodoListProvider>()
-                                                .changeSelectedTodo(todo);
-                                            return TodoModal(
-                                                type: 'Edit-owner', uid: uid);
-                                          },
-                                        );
+                                    );
+                                  },
+                                  icon: button),
+                              IconButton(
+                                  color: Colors.lightGreen,
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        context
+                                            .read<TodoListProvider>()
+                                            .changeSelectedTodo(todo);
+                                        return TodoModal(
+                                            type: 'Edit-owner', uid: uid);
                                       },
-                                      icon: const Icon(Icons.edit)),
-                                ],
-                              )),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.edit)),
+                            ],
+                          )),
                           child: Container(
                               padding: const EdgeInsets.only(
                                   top: 65, bottom: 60, left: 20, right: 20),
@@ -191,48 +202,57 @@ class _TodoPageState extends State<TodoPage> {
                                   fontFamily: 'Poppins',
                                   color: Colors.black54))),
                       footer: GridTileBar(
-                          leading: Text("STATUS: ${todo.status}",
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w200,
-                                  fontFamily: 'Poppins',
-                                  color: Colors.black87)),
-                          trailing: Row(
-                            children: [
-                              IconButton(
-                                  color: Colors.lightGreen,
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        context
-                                            .read<TodoListProvider>()
-                                            .changeSelectedTodo(todo);
-                                        return TodoModal(
-                                            type: 'Toggle-status',
-                                            uid: uid,
-                                            status: todo.status);
-                                      },
-                                    );
+                          leading: Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      context
+                                          .read<TodoListProvider>()
+                                          .changeSelectedTodo(todo);
+                                      return TodoModal(
+                                        type: 'View',
+                                        uid: uid,
+                                      );
+                                    });
+                              },
+                              icon: const Icon(Icons.remove_red_eye_outlined)),
+                          IconButton(
+                              color: Colors.lightGreen,
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    context
+                                        .read<TodoListProvider>()
+                                        .changeSelectedTodo(todo);
+                                    return TodoModal(
+                                        type: 'Toggle-status',
+                                        uid: uid,
+                                        status: todo.status);
                                   },
-                                  icon: button),
-                              IconButton(
-                                  color: Colors.lightGreen,
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        context
-                                            .read<TodoListProvider>()
-                                            .changeSelectedTodo(todo);
-                                        return TodoModal(
-                                            type: 'Edit-friend', uid: uid);
-                                      },
-                                    );
+                                );
+                              },
+                              icon: button),
+                          IconButton(
+                              color: Colors.lightGreen,
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    context
+                                        .read<TodoListProvider>()
+                                        .changeSelectedTodo(todo);
+                                    return TodoModal(
+                                        type: 'Edit-friend', uid: uid);
                                   },
-                                  icon: const Icon(Icons.edit)),
-                            ],
-                          )),
+                                );
+                              },
+                              icon: const Icon(Icons.edit)),
+                        ],
+                      )),
                       child: Container(
                           padding: const EdgeInsets.only(
                               top: 65, bottom: 60, left: 20, right: 20),

@@ -163,7 +163,7 @@ class _UserPageState extends State<UserPage> {
                         child: ListTile(
                           title: Text("${user.firstName} ${user.lastName}",
                               style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w300,
                                   fontFamily: 'Poppins',
                                   color: Colors.black87)),

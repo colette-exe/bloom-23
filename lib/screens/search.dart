@@ -24,6 +24,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Search',
             style: TextStyle(
@@ -38,7 +39,7 @@ class _SearchState extends State<Search> {
           height: MediaQuery.of(context).size.height,
           child: Column(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ConstrainedBox(
                     constraints: const BoxConstraints.tightFor(width: 500),
@@ -68,7 +69,7 @@ class _SearchState extends State<Search> {
                   child: const Text('CLEAR'),
                 ),
                 SizedBox(
-                    height: MediaQuery.of(context).size.height - 200,
+                    height: MediaQuery.of(context).size.height - 400,
                     child: UserPage(
                         regex: widget.text, uid: args.uid, type: 'search')),
               ])),

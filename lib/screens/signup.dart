@@ -204,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     final signupButton = Padding(
       key: const Key('signupBtn'),
-      padding: const EdgeInsets.only(left: 200, right: 200, top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
@@ -234,7 +234,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     final backButton = Padding(
       key: const Key('backBtn'),
-      padding: const EdgeInsets.only(left: 200, right: 200, top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,

@@ -14,6 +14,7 @@ class Todo {
   String description;
   String status; // ongoing, paused, completed
   List? history;
+  String deadline;
 
   String ownerId;
   List? ownerFriends;
@@ -24,6 +25,7 @@ class Todo {
       required this.description,
       required this.status,
       this.history,
+      required this.deadline,
       required this.ownerId,
       this.ownerFriends});
 
@@ -35,6 +37,7 @@ class Todo {
         description: json['description'],
         status: json['status'],
         history: json['history'],
+        deadline: json['deadline'],
         ownerId: json['ownerId'],
         ownerFriends: json['ownerFriends']);
   }
@@ -46,6 +49,7 @@ class Todo {
       'description': todo.description,
       'status': todo.status,
       'history': todo.history,
+      'deadline': todo.deadline,
       'ownerId': todo.ownerId,
       'ownerFriends': todo.ownerFriends
     };
