@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
       padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: const Color(0xff7dac66),
           padding:
               const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
         ),
@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
       padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: const Color(0xff7dac66),
           padding:
               const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
         ),
@@ -91,7 +91,8 @@ class _LoginState extends State<Login> {
               "LOG IN",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20,
+                  color: Color(0xff144c3b),
+                  fontSize: 25,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold),
             ),

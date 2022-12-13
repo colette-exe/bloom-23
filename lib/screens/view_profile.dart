@@ -22,24 +22,33 @@ class _ViewProfileState extends State<ViewProfile> {
   Widget bioWidget(BuildContext context, bio) {
     bioController.text = bio;
 
-    return SizedBox(
-        width: 500,
-        height: 100,
-        child: TextField(
-          textAlign: TextAlign.center,
-          keyboardType: TextInputType.multiline,
-          minLines: 1,
-          maxLines: 5,
-          readOnly: true,
-          controller: bioController,
-          style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.normal,
-              fontFamily: 'Poppins',
-              color: Colors.black87),
-          decoration: const InputDecoration(border: OutlineInputBorder()),
-        ));
-    // check buttons to display
+    if (bio.isNotEmpty) {
+      return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+                width: 500,
+                height: 100,
+                child: DecoratedBox(
+                    decoration: const BoxDecoration(color: Color(0xffb5c698)),
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 5,
+                      maxLines: 5,
+                      controller: bioController,
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Poppins',
+                          color: Colors.black87),
+                      decoration:
+                          const InputDecoration(border: OutlineInputBorder()),
+                    ))),
+          ]);
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   @override
@@ -50,7 +59,7 @@ class _ViewProfileState extends State<ViewProfile> {
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 216, 161, 136),
         foregroundColor: Colors.white,
         elevation: 0,
         titleTextStyle: const TextStyle(
@@ -64,27 +73,29 @@ class _ViewProfileState extends State<ViewProfile> {
         widthFactor: MediaQuery.of(context).size.width,
         heightFactor: MediaQuery.of(context).size.height,
         child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.green.shade100),
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                color: Colors.green.shade400),
-            width: 500,
-            height: 1000,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             alignment: Alignment.center,
-            margin: const EdgeInsets.all(50),
-            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.only(
+                left: 25, right: 25, top: 100, bottom: 50),
+            padding: const EdgeInsets.all(10),
             child: SizedBox(
-                height: 800,
+                height: MediaQuery.of(context).size.height,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text("${user!.firstName} ${user.lastName}",
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
-                            fontSize: 25,
+                            wordSpacing: 1.0,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Poppins',
                             letterSpacing: 1,
-                            color: Colors.white)),
+                            color: Color(0xff676d16))),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Column(children: [
                       Text(user.userName,
                           style: const TextStyle(
@@ -92,12 +103,18 @@ class _ViewProfileState extends State<ViewProfile> {
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Poppins',
                               color: Colors.black87)),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Text("ID: ${user.userId}",
                           style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Poppins',
                               color: Colors.black54)),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -107,9 +124,9 @@ class _ViewProfileState extends State<ViewProfile> {
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Poppins',
                                     color: Colors.black87)),
-                            Icon(
+                            const Icon(
                               Icons.spa_rounded,
-                              color: Colors.amber.shade400,
+                              color: Color(0xff7dac66),
                             ),
                             Text(user.location,
                                 style: const TextStyle(
@@ -119,6 +136,9 @@ class _ViewProfileState extends State<ViewProfile> {
                                     color: Colors.black87)),
                           ]),
                     ]),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     bioWidget(context, user.bio),
                     // friendsWidget(
                     // context, data['friends'], data['userId']),

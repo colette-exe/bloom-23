@@ -50,7 +50,10 @@ class _UserPageState extends State<UserPage> {
                   builder: (BuildContext context) =>
                       UserModal(userId: userId, action: 'Unfriend'));
             }),
-            icon: const Icon(Icons.person_remove));
+            icon: const Icon(
+              Icons.person_remove,
+              color: Color(0xff7dac66),
+            ));
       }
     }
     // user sent other user a friend request
@@ -65,7 +68,10 @@ class _UserPageState extends State<UserPage> {
                   builder: (BuildContext context) => UserModal(
                       userId: userId, action: 'Cancel Friend Request'));
             }),
-            icon: const Icon(Icons.cancel_schedule_send_sharp));
+            icon: const Icon(
+              Icons.cancel_schedule_send_sharp,
+              color: Color(0xff7dac66),
+            ));
       }
     }
     // user received a friend request from other user
@@ -81,7 +87,10 @@ class _UserPageState extends State<UserPage> {
                     builder: (BuildContext context) =>
                         UserModal(userId: userId, action: 'Accept Request'));
               }),
-              icon: const Icon(Icons.check_circle_outline)),
+              icon: const Icon(
+                Icons.check_circle_outline,
+                color: Color(0xff7dac66),
+              )),
           // reject friend request
           IconButton(
               onPressed: (() {
@@ -91,7 +100,10 @@ class _UserPageState extends State<UserPage> {
                     builder: (BuildContext context) => UserModal(
                         userId: userId, action: 'Reject Friend Request'));
               }),
-              icon: const Icon(Icons.cancel_outlined))
+              icon: const Icon(
+                Icons.cancel_outlined,
+                color: Color(0xff7dac66),
+              ))
         ]);
       }
     }
@@ -105,7 +117,10 @@ class _UserPageState extends State<UserPage> {
               builder: (BuildContext context) =>
                   UserModal(userId: userId, action: 'Add Friend'));
         }),
-        icon: const Icon(Icons.person_add));
+        icon: const Icon(
+          Icons.person_add,
+          color: Color(0xff7dac66),
+        ));
   }
 
   @override
@@ -200,35 +215,28 @@ class _UserPageState extends State<UserPage> {
                       .any((e) => e.contains(widget.uid));
                 }
                 if (element) {
-                  return Dismissible(
-                      key: Key(user.userId),
-                      onDismissed: (direction) {},
-                      background: Container(
-                        color: Colors.amber,
-                        child: const Icon(Icons.delete),
-                      ),
-                      child: ListTile(
-                        title: Text("${user.firstName} ${user.lastName}",
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                                fontFamily: 'Poppins',
-                                color: Colors.black87)),
-                        trailing:
-                            Row(mainAxisSize: MainAxisSize.min, children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.pushNamed(context, '/view-profile',
-                                    arguments:
-                                        ScreenArguments(user.userId, user));
-                              },
-                              icon: const Icon(Icons
-                                  .remove_red_eye_outlined)), // view profile
-                          iconButtonBuilder(
-                              context, widget.uid, user) // user action
-                        ]),
-                      ));
+                  return ListTile(
+                    title: Text("${user.firstName} ${user.lastName}",
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins',
+                            color: Colors.black87)),
+                    trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/view-profile',
+                                arguments: ScreenArguments(user.userId, user));
+                          },
+                          icon: const Icon(
+                            Icons.remove_red_eye_outlined,
+                            color: Color(0xff7dac66),
+                          )), // view profile
+                      iconButtonBuilder(
+                          context, widget.uid, user) // user action
+                    ]),
+                  );
                 } else {
                   return const SizedBox.shrink();
                 }

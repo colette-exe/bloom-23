@@ -32,7 +32,7 @@ class _SearchState extends State<Search> {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
                 color: Colors.white)),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xff7dac66),
       ),
       body: Container(
           padding: const EdgeInsets.all(30),
@@ -66,7 +66,17 @@ class _SearchState extends State<Search> {
                       widget.text = _controller.text;
                     });
                   },
-                  child: const Text('CLEAR'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 241, 238, 236),
+                  ),
+                  child: const Text(
+                    'CLEAR',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                        color: Color(0xff7dac66)),
+                  ),
                 ),
                 SizedBox(
                     height: MediaQuery.of(context).size.height - 400,

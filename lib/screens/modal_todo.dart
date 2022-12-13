@@ -130,6 +130,7 @@ class TodoModal extends StatelessWidget {
                   fontFamily: 'Poppins',
                   color: Colors.black87),
             ),
+            // deadline
             TextFormField(
               controller: deadlineController,
               key: const Key('deadline'),
@@ -150,7 +151,7 @@ class TodoModal extends StatelessWidget {
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2050));
 
-                if (date == null) {
+                if (date == null || date == "") {
                   deadlineController.text =
                       "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
                 } else {
@@ -158,6 +159,10 @@ class TodoModal extends StatelessWidget {
                       "${date.month}/${date.day}/${date.year}";
                 }
               }),
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 14,
+              ),
             )
           ]);
         }
@@ -170,82 +175,88 @@ class TodoModal extends StatelessWidget {
           statController.text = todo.status;
           deadlineController.text = todo.deadline;
 
-          return SizedBox(
-              height: 300,
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // title
-                    TextField(
-                      controller: titleController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Text("Title"),
-                      ),
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          color: Colors.black87),
+          return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // title
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text("Title"),
+                  ),
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                ),
+                const SizedBox(height: 7),
+                // description
+                TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 5,
+                    controller: descController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Description"),
                     ),
-                    // description
-                    TextField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        controller: descController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text("Description"),
-                        ),
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87)),
-                    // status
-                    TextField(
-                      controller: statController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Text("Status"),
-                      ),
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          fontFamily: 'Poppins',
-                          color: Colors.black87),
-                    ),
-                    TextFormField(
-                      controller: deadlineController,
-                      key: const Key('deadline'),
-                      decoration: const InputDecoration(
-                        labelText: "Deadline",
-                        labelStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            fontFamily: 'Poppins',
-                            color: Colors.black54),
-                      ),
-                      onTap: (() async {
-                        DateTime? date = await showDatePicker(
-                            fieldHintText: "Enter deadline",
-                            context: context,
-                            initialEntryMode: DatePickerEntryMode.calendarOnly,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2050));
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Poppins',
+                        color: Colors.black87)),
+                const SizedBox(height: 7),
+                // status
+                TextField(
+                  controller: statController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text("Status"),
+                  ),
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                ),
+                // deadline
+                const SizedBox(height: 7),
+                TextFormField(
+                  controller: deadlineController,
+                  key: const Key('deadline'),
+                  decoration: const InputDecoration(
+                    labelText: "Deadline",
+                    labelStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Poppins',
+                        color: Colors.black54),
+                  ),
+                  onTap: (() async {
+                    DateTime? date = await showDatePicker(
+                        fieldHintText: "Enter deadline",
+                        context: context,
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2050));
 
-                        if (date == null) {
-                          deadlineController.text =
-                              "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
-                        } else {
-                          deadlineController.text =
-                              "${date.month}/${date.day}/${date.year}";
-                        }
-                      }),
-                    ),
-                  ]));
+                    if (date == null) {
+                      deadlineController.text =
+                          "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
+                    } else {
+                      deadlineController.text =
+                          "${date.month}/${date.day}/${date.year}";
+                    }
+                  }),
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                  ),
+                ),
+              ]);
         }
       case "Edit-friend":
         {
@@ -253,109 +264,149 @@ class TodoModal extends StatelessWidget {
           Todo todo = context.read<TodoListProvider>().selected;
           titleController.text = todo.title;
           descController.text = todo.description;
+          deadlineController.text = todo.deadline;
 
-          return SizedBox(
-              height: 300,
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // title
-                    TextField(
-                      controller: titleController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Text("Title"),
-                      ),
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          color: Colors.black87),
-                    ),
-                    // description
-                    TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      controller: descController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Text("Description"),
-                      ),
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          fontFamily: 'Poppins',
-                          color: Colors.black87),
-                    ),
-                    TextFormField(
-                      controller: deadlineController,
-                      key: const Key('deadline'),
-                      decoration: const InputDecoration(
-                        labelText: "Deadline",
-                        labelStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            fontFamily: 'Poppins',
-                            color: Colors.black54),
-                      ),
-                      onTap: (() async {
-                        DateTime? date = await showDatePicker(
-                            fieldHintText: "Enter deadline",
-                            context: context,
-                            initialEntryMode: DatePickerEntryMode.calendarOnly,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2050));
+          return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // title
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text("Title"),
+                  ),
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                ),
+                const SizedBox(height: 7),
+                // description
+                TextField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 5,
+                  controller: descController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    label: Text("Description"),
+                  ),
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                ),
+                const SizedBox(height: 7),
+                // deadline
+                TextFormField(
+                  controller: deadlineController,
+                  key: const Key('deadline'),
+                  decoration: const InputDecoration(
+                    labelText: "Deadline",
+                    labelStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Poppins',
+                        color: Colors.black54),
+                  ),
+                  onTap: (() async {
+                    DateTime? date = await showDatePicker(
+                        fieldHintText: "Enter deadline",
+                        context: context,
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2050));
 
-                        if (date == null) {
-                          deadlineController.text =
-                              "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
-                        } else {
-                          deadlineController.text =
-                              "${date.month}/${date.day}/${date.year}";
-                        }
-                      }),
-                    )
-                  ]));
+                    if (date == null) {
+                      deadlineController.text =
+                          "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
+                    } else {
+                      deadlineController.text =
+                          "${date.month}/${date.day}/${date.year}";
+                    }
+                  }),
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                  ),
+                ),
+              ]);
         }
       case 'View':
         {
           Todo todo = context.read<TodoListProvider>().selected;
+          TextEditingController description = TextEditingController();
+          description.text = todo.description;
 
-          return SizedBox(
-              height: 300,
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // title
-                    Text(
-                      todo.title,
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          color: Colors.black87),
-                    ),
-                    // description
-                    Text(
-                      todo.description,
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          fontFamily: 'Poppins',
-                          color: Colors.black87),
-                    ),
-                    Text(
-                      todo.history?[0],
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          fontFamily: 'Poppins',
-                          color: Colors.black87),
-                    ),
-                  ]));
+          return Column(mainAxisSize: MainAxisSize.min, children: [
+            // title
+            Text(
+              todo.title,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins',
+                  color: Colors.black87),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              todo.history?[0],
+              style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w300,
+                  fontFamily: 'Poppins',
+                  color: Colors.black54),
+            ),
+            const SizedBox(
+              height: 15,
+            ), // description
+            DecoratedBox(
+                decoration: const BoxDecoration(),
+                child: TextField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 5,
+                  readOnly: true,
+                  controller: description,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                )),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  todo.deadline,
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                ),
+                Text(
+                  todo.status,
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                ),
+              ],
+            )
+          ]);
         }
       default:
         return Text(
@@ -404,8 +455,13 @@ class TodoModal extends StatelessWidget {
               }
             case 'Edit-owner': // can edit status
               {
-                context.read<TodoListProvider>().editTodo(statController.text,
-                    titleController.text, descController.text);
+                context.read<TodoListProvider>().editTodo(
+                      uid,
+                      statController.text,
+                      titleController.text,
+                      descController.text,
+                      deadlineController.text,
+                    );
 
                 // Remove dialog after editing
                 Navigator.of(context).pop();
@@ -413,9 +469,12 @@ class TodoModal extends StatelessWidget {
               }
             case 'Edit-friend': // can only edit the title and description
               {
-                context
-                    .read<TodoListProvider>()
-                    .editTodo(null, titleController.text, descController.text);
+                context.read<TodoListProvider>().editTodo(
+                    uid,
+                    null,
+                    titleController.text,
+                    descController.text,
+                    deadlineController.text);
 
                 // Remove dialog after editing
                 Navigator.of(context).pop();
@@ -456,6 +515,7 @@ class TodoModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       title: _buildTitle(),
       content: _buildContent(context),
 

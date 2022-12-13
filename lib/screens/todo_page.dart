@@ -35,7 +35,7 @@ class _TodoPageState extends State<TodoPage> {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
                 color: Colors.white)),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xff7dac66),
       ),
       body: StreamBuilder(
         stream: todoStream,
@@ -91,11 +91,11 @@ class _TodoPageState extends State<TodoPage> {
                           SnackBar(content: Text('${todo.title} deleted')));
                     },
                     background: Container(
-                      color: Colors.amber,
+                      color: const Color(0xffd4cf69),
                       child: const Icon(Icons.delete),
                     ),
                     child: Card(
-                        color: Colors.green,
+                        color: const Color(0xff96bfac),
                         margin: const EdgeInsets.all(5),
                         child: GridTile(
                           header: GridTileBar(
@@ -104,7 +104,7 @@ class _TodoPageState extends State<TodoPage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Poppins',
-                                    color: Colors.black87)),
+                                    color: Color(0xff676d16))),
                             subtitle: Text(todo.history![0],
                                 style: const TextStyle(
                                     fontSize: 12,
@@ -116,6 +116,8 @@ class _TodoPageState extends State<TodoPage> {
                               leading: Row(
                             children: [
                               IconButton(
+                                  color:
+                                      const Color.fromARGB(255, 233, 227, 102),
                                   onPressed: () {
                                     showDialog(
                                         context: context,
@@ -132,7 +134,8 @@ class _TodoPageState extends State<TodoPage> {
                                   icon: const Icon(
                                       Icons.remove_red_eye_outlined)),
                               IconButton(
-                                  color: Colors.lightGreen,
+                                  color:
+                                      const Color.fromARGB(255, 233, 227, 102),
                                   onPressed: () {
                                     showDialog(
                                       context: context,
@@ -149,7 +152,8 @@ class _TodoPageState extends State<TodoPage> {
                                   },
                                   icon: button),
                               IconButton(
-                                  color: Colors.lightGreen,
+                                  color:
+                                      const Color.fromARGB(255, 233, 227, 102),
                                   onPressed: () {
                                     showDialog(
                                       context: context,
@@ -185,7 +189,7 @@ class _TodoPageState extends State<TodoPage> {
                         )));
               } else if (friend) {
                 return Card(
-                    color: Colors.blue,
+                    color: const Color(0xffe7b6a0),
                     margin: const EdgeInsets.all(5),
                     child: GridTile(
                       header: GridTileBar(
@@ -194,7 +198,7 @@ class _TodoPageState extends State<TodoPage> {
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
-                                  color: Colors.black87)),
+                                  color: Color(0xff676d16))),
                           subtitle: Text(todo.history![0],
                               style: const TextStyle(
                                   fontSize: 12,
@@ -205,6 +209,7 @@ class _TodoPageState extends State<TodoPage> {
                           leading: Row(
                         children: [
                           IconButton(
+                              color: const Color(0xff676d16),
                               onPressed: () {
                                 showDialog(
                                     context: context,
@@ -220,7 +225,7 @@ class _TodoPageState extends State<TodoPage> {
                               },
                               icon: const Icon(Icons.remove_red_eye_outlined)),
                           IconButton(
-                              color: Colors.lightGreen,
+                              color: const Color(0xff676d16),
                               onPressed: () {
                                 showDialog(
                                   context: context,
@@ -237,7 +242,7 @@ class _TodoPageState extends State<TodoPage> {
                               },
                               icon: button),
                           IconButton(
-                              color: Colors.lightGreen,
+                              color: const Color(0xff676d16),
                               onPressed: () {
                                 showDialog(
                                   context: context,
@@ -279,13 +284,15 @@ class _TodoPageState extends State<TodoPage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xff7dac66),
         onPressed: () {
           showDialog(
             context: context,
             builder: (BuildContext context) => TodoModal(type: 'Add', uid: uid),
           );
         },
-        child: const Icon(Icons.note_add_outlined),
+        child: const Icon(Icons.add_box_rounded,
+            color: Color.fromARGB(255, 233, 201, 187)),
       ),
     );
   }

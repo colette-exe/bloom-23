@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
           });
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green.shade500,
+          backgroundColor: const Color(0xffe8b69f),
         ),
         child: const Text(
           "EDIT",
@@ -59,7 +59,7 @@ class _ProfileState extends State<Profile> {
           });
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green.shade500,
+          backgroundColor: const Color(0xffe8b69f),
         ),
         child: const Text("SAVE",
             style: TextStyle(
@@ -79,11 +79,11 @@ class _ProfileState extends State<Profile> {
           width: 500,
           height: 100,
           child: DecoratedBox(
-              decoration: const BoxDecoration(color: Colors.grey),
+              decoration: const BoxDecoration(color: Color(0xffb5c698)),
               child: TextField(
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.multiline,
-                minLines: 1,
+                minLines: 5,
                 maxLines: 5,
                 readOnly: readOnly,
                 controller: bioController,
@@ -109,12 +109,13 @@ class _ProfileState extends State<Profile> {
     // ScreenArguments uid = ScreenArguments(userDoc.id, []);
     String uid = userDoc.id;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: Drawer(
         child: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: Color(0xff7dac66),
               ),
               child: Text('WHERE TO?',
                   style: TextStyle(
@@ -129,7 +130,7 @@ class _ProfileState extends State<Profile> {
                   'Friends',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Poppins',
                       letterSpacing: 1,
                       color: Colors.black),
@@ -144,7 +145,7 @@ class _ProfileState extends State<Profile> {
                   'Friend Requests',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Poppins',
                       letterSpacing: 1,
                       color: Colors.black),
@@ -159,7 +160,7 @@ class _ProfileState extends State<Profile> {
                   'Search Users',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Poppins',
                       letterSpacing: 1,
                       color: Colors.black),
@@ -174,7 +175,7 @@ class _ProfileState extends State<Profile> {
                   'Todos',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Poppins',
                       letterSpacing: 1,
                       color: Colors.black),
@@ -189,7 +190,7 @@ class _ProfileState extends State<Profile> {
                 title: const Text(
                   'LOGOUT',
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Poppins',
                       letterSpacing: 1,
@@ -205,7 +206,7 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xff7dac66),
         foregroundColor: Colors.white,
         elevation: 0,
         titleTextStyle: const TextStyle(
@@ -219,15 +220,12 @@ class _ProfileState extends State<Profile> {
         widthFactor: MediaQuery.of(context).size.width,
         heightFactor: MediaQuery.of(context).size.height,
         child: Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.green.shade100),
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              color: Colors.green.shade400),
-          width: 500,
-          height: 1000,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           alignment: Alignment.center,
-          margin: const EdgeInsets.all(50),
-          padding: const EdgeInsets.all(20),
+          margin:
+              const EdgeInsets.only(left: 25, right: 25, top: 100, bottom: 50),
+          padding: const EdgeInsets.all(10),
           child: FutureBuilder<DocumentSnapshot>(
               future: userDoc.get(),
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -241,17 +239,22 @@ class _ProfileState extends State<Profile> {
                   Map<String, dynamic> data =
                       snapshot.data!.data() as Map<String, dynamic>;
                   return SizedBox(
-                      height: 800,
+                      height: MediaQuery.of(context).size.height,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(data['firstName'] + " " + data['lastName'],
+                              textAlign: TextAlign.center,
                               style: const TextStyle(
-                                  fontSize: 25,
+                                  wordSpacing: 1.0,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
                                   letterSpacing: 1,
-                                  color: Colors.white)),
+                                  color: Color(0xff676d16))),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Column(children: [
                             Text(data['userName'],
                                 style: const TextStyle(
@@ -259,12 +262,18 @@ class _ProfileState extends State<Profile> {
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Poppins',
                                     color: Colors.black87)),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Text("ID: ${data['userId']}",
                                 style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Poppins',
                                     color: Colors.black54)),
+                            const SizedBox(
+                              height: 20,
+                            ),
                             Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -275,9 +284,9 @@ class _ProfileState extends State<Profile> {
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Poppins',
                                           color: Colors.black87)),
-                                  Icon(
+                                  const Icon(
                                     Icons.spa_rounded,
-                                    color: Colors.amber.shade400,
+                                    color: Color(0xffe8b69f),
                                   ),
                                   Text(data['location'],
                                       style: const TextStyle(
@@ -287,10 +296,10 @@ class _ProfileState extends State<Profile> {
                                           color: Colors.black87)),
                                 ]),
                           ]),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           bioWidget(context, data['bio'], data['userId']),
-
-                          // friendsWidget(
-                          // context, data['friends'], data['userId']),
                         ],
                       ));
                 }
@@ -298,10 +307,10 @@ class _ProfileState extends State<Profile> {
                 return const Text("LOADING",
                     style: TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.bold,
                         fontFamily: 'Poppins',
                         letterSpacing: 1.0,
-                        color: Colors.black));
+                        color: Color(0xff7eb180)));
               }),
         ),
       ),

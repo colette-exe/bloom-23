@@ -55,8 +55,8 @@ class FirebaseTodoAPI {
     return db.collection("todos").snapshots();
   }
 
-  Future<String> editTodo(
-      String? id, String? status, String title, String description) async {
+  Future<String> editTodo(String editedBy, String? id, String? status,
+      String title, String description, String deadline) async {
     try {
       final docRef = db.collection("todos").doc(id);
       if (status != null) {
@@ -76,7 +76,8 @@ class FirebaseTodoAPI {
                 'status': status,
                 'title': title,
                 'description': description,
-                'history': history
+                'history': history,
+                'deadline': deadline
               });
             });
           }
@@ -89,15 +90,16 @@ class FirebaseTodoAPI {
             "${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}";
         docRef.get().then((value) async {
           if (value.exists) {
-            final userRef = db.collection("users").doc(id);
-            userRef.get().then((value) async {
+            final userRef = db.collection("users").doc(editedBy);
+            userRef.get().then((user) async {
               List history = value.get(FieldPath(const ['history']));
-              String name = value.get(FieldPath(const ['userName']));
+              String name = user.get(FieldPath(const ['userName']));
               history.insert(0, 'edited by $name - $date');
               await db.collection("todos").doc(docRef.id).update({
                 'title': title,
                 'description': description,
-                'history': history
+                'history': history,
+                'deadline': deadline
               });
             });
           }

@@ -42,9 +42,10 @@ class TodoListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void editTodo(String? newStatus, String newTitle, String newDesc) async {
-    String message = await firebaseService.editTodo(
-        "${_selectedTodo!.id}", newStatus, newTitle, newDesc);
+  void editTodo(String userId, String? newStatus, String newTitle,
+      String newDesc, String newDeadline) async {
+    String message = await firebaseService.editTodo(userId,
+        "${_selectedTodo!.id}", newStatus, newTitle, newDesc, newDeadline);
     print(message);
     notifyListeners();
   }

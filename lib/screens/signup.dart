@@ -122,6 +122,10 @@ class _SignUpPageState extends State<SignUpPage> {
           return null;
         }
       }),
+      style: const TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 14,
+      ),
     );
 
     final location = TextFormField(
@@ -207,7 +211,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
+            backgroundColor: const Color(0xff7dac66),
             padding:
                 const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
           ),
@@ -237,7 +241,7 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
+            backgroundColor: const Color(0xff7dac66),
             padding:
                 const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
           ),
@@ -264,6 +268,7 @@ class _SignUpPageState extends State<SignUpPage> {
               "SIGN UP",
               textAlign: TextAlign.center,
               style: TextStyle(
+                  color: Color(0xff144c3b),
                   fontSize: 20,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold),
