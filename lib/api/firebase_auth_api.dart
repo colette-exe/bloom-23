@@ -7,36 +7,38 @@ import 'package:flutter/material.dart';
 
 class FirebaseAuthAPI {
   // real database
-  static final FirebaseAuth auth = FirebaseAuth.instance;
-  static final FirebaseFirestore db = FirebaseFirestore.instance;
+  // static final FirebaseAuth auth = FirebaseAuth.instance;
+  // static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   //---- used for testing------------------------
-  // final db = FakeFirebaseFirestore();
+  final db = FakeFirebaseFirestore();
 
-  // final auth = MockFirebaseAuth(
-  //     mockUser: MockUser(
-  //   isAnonymous: false,
-  //   uid: 'mockuid',
-  //   email: 'realuser@usersassociation.com',
-  //   displayName: 'Mackenzee',
-  // ));
+  final auth = MockFirebaseAuth(
+      mockUser: MockUser(
+    isAnonymous: false,
+    uid: 'mockuid',
+    email: 'realuser@usersassociation.com',
+    displayName: 'Mackenzee',
+  ));
   // ----------------------------------------------
 
   Stream<User?> getUser() {
     return auth.authStateChanges();
   }
 
-  void signIn(String email, String password) async {
+  signIn(String email, String password) async {
     UserCredential credential;
     try {
       credential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
+      return "Successfully logged in!";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
+      return e;
     }
   }
 
@@ -52,7 +54,15 @@ class FirebaseAuthAPI {
       if (credential.user != null) {
         saveUserToFirestore(credential.user?.uid, email, firstName, lastName,
             bday, location, username); // save user to database
+        try {
+          // add email to emails collection
+          await db.collection("emails").add({'email': email});
+          return "Successfully signed up!";
+        } on FirebaseException catch (e) {
+          return "Failed with error '${e.code}: ${e.message}";
+        }
       }
+      return "Successfully signed up!";
     } on FirebaseAuthException catch (e) {
       //possible to return something more useful
       //than just print an error message to improve UI/UX
@@ -61,17 +71,19 @@ class FirebaseAuthAPI {
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
+      return e;
     } catch (e) {
       return e;
     }
   }
 
-  void signOut() async {
+  signOut() async {
     auth.signOut();
+    return "Successfully signed out!";
   }
 
   // called in sign up
-  void saveUserToFirestore(String? uid, String email, String firstName,
+  saveUserToFirestore(String? uid, String email, String firstName,
       String lastName, String bday, String location, String username) async {
     try {
       await db.collection("users").doc(uid).set({
@@ -82,12 +94,15 @@ class FirebaseAuthAPI {
         "bday": bday,
         "location": location,
         "userName": username,
+        "bio": "",
         "friends": [],
         "receivedFriendRequests": [],
         "sentFriendRequests": []
       });
+      return true;
     } on FirebaseException catch (e) {
       print(e.message);
+      return false;
     }
   }
 }

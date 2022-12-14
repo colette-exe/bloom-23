@@ -106,6 +106,7 @@ class _ProfileState extends State<Profile> {
     DocumentReference userDoc = context
         .watch<UserListProvider>()
         .getUserById(context.watch<AuthProvider>().user!.uid);
+    print(userDoc);
     // ScreenArguments uid = ScreenArguments(userDoc.id, []);
     String uid = userDoc.id;
     return Scaffold(

@@ -7,15 +7,30 @@
  */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
 class FireBaseUserAPI {
-  static final FirebaseFirestore db = FirebaseFirestore.instance;
+  // static final FirebaseFirestore db = FirebaseFirestore.instance;
   static const String RECEIVED = "receivedFriendRequests";
   static const String SENT = "sentFriendRequests";
   static const String FRIENDS = "friends";
   static const String BIO = "bio";
 
+  //---- used for testing------------------------
+  final db = FakeFirebaseFirestore();
+
+  final auth = MockFirebaseAuth(
+      mockUser: MockUser(
+    isAnonymous: false,
+    uid: 'mockuid',
+    email: 'realuser@usersassociation.com',
+    displayName: 'Mackenzee',
+  ));
+  // ----------------------------------------------
+
   // adding user after signing up
+  // NOT USED
   Future<String> addUser(Map<String, dynamic> user) async {
     try {
       final DocumentReference userRef = await db.collection("users").add(user);

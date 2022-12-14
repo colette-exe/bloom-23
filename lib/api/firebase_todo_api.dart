@@ -3,13 +3,17 @@
 */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 // import for testing
 // import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 class FirebaseTodoAPI {
   // commented out for testing
-  static final FirebaseFirestore db = FirebaseFirestore.instance;
-  // final db = FakeFirebaseFirestore(); // for testing
+  // static final FirebaseFirestore db = FirebaseFirestore.instance;
+  //---- used for testing------------------------
+  final db = FakeFirebaseFirestore();
+  // ----------------------------------------------
 
   Future<String> addTodo(Map<String, dynamic> todo) async {
     try {
@@ -56,7 +60,7 @@ class FirebaseTodoAPI {
   }
 
   Future<String> editTodo(String editedBy, String? id, String? status,
-      String title, String description, String deadline) async {
+      String title, String description, String deadline, String time) async {
     try {
       final docRef = db.collection("todos").doc(id);
       if (status != null) {
@@ -77,7 +81,8 @@ class FirebaseTodoAPI {
                 'title': title,
                 'description': description,
                 'history': history,
-                'deadline': deadline
+                'deadline': deadline,
+                'time': time
               });
             });
           }
@@ -99,7 +104,8 @@ class FirebaseTodoAPI {
                 'title': title,
                 'description': description,
                 'history': history,
-                'deadline': deadline
+                'deadline': deadline,
+                'time': time
               });
             });
           }
@@ -150,12 +156,12 @@ class FirebaseTodoAPI {
             });
             return batch.commit();
           });
-          return "Successfully updatedTodo!";
+          return "Successfully updated todo!";
         } on FirebaseException catch (e) {
           return "Failed with error '${e.code}: ${e.message}";
         }
       });
-      return "Successfully updatedTodo!";
+      return "Successfully updated todo!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }
@@ -192,12 +198,12 @@ class FirebaseTodoAPI {
             });
             return batch.commit();
           });
-          return "Successfully updatedTodo!";
+          return "Successfully updated todo!";
         } on FirebaseException catch (e) {
           return "Failed with error '${e.code}: ${e.message}";
         }
       });
-      return "Successfully updatedTodo!";
+      return "Successfully updated todo!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }
@@ -215,11 +221,12 @@ class FirebaseTodoAPI {
             status = 'ongoing';
           }
           await db.collection("todos").doc(id).update({'status': status});
+          return "Changed status to $status!";
         } else {
           return "Todo not found.";
         }
       });
-      return "Changed status to completed!";
+      return "Successfully changed todo status!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }

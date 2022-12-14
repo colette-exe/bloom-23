@@ -565,12 +565,12 @@ class TodoModal extends StatelessWidget {
             case 'Edit-owner': // can edit status
               {
                 context.read<TodoListProvider>().editTodo(
-                      uid,
-                      statController.text,
-                      titleController.text,
-                      descController.text,
-                      deadlineController.text,
-                    );
+                    uid,
+                    statController.text,
+                    titleController.text,
+                    descController.text,
+                    deadlineController.text,
+                    timeController.text);
 
                 // Remove dialog after editing
                 Navigator.of(context).pop();
@@ -583,7 +583,8 @@ class TodoModal extends StatelessWidget {
                     null,
                     titleController.text,
                     descController.text,
-                    deadlineController.text);
+                    deadlineController.text,
+                    timeController.text);
 
                 // Remove dialog after editing
                 Navigator.of(context).pop();

@@ -35,8 +35,9 @@ class AuthProvider with ChangeNotifier {
     return user != null;
   }
 
-  void signIn(String email, String password) {
-    authService.signIn(email, password);
+  void signIn(String email, String password) async {
+    String message = await authService.signIn(email, password);
+    print(message);
   }
 
   String getCurrentUser() {
@@ -44,8 +45,9 @@ class AuthProvider with ChangeNotifier {
     return userId;
   }
 
-  void signOut() {
-    authService.signOut();
+  void signOut() async {
+    String message = await authService.signOut();
+    print(message);
   }
 
   signUp(String firstName, String lastName, String email, String password,

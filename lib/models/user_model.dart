@@ -16,6 +16,7 @@ class User {
   String bday;
   String location;
   String bio;
+  String email;
 
   // lists of string userIds
   List<dynamic> friends;
@@ -24,6 +25,7 @@ class User {
 
   // constructor
   User({
+    required this.email,
     required this.userId,
     required this.userName,
     required this.firstName,
@@ -40,6 +42,7 @@ class User {
   // for fetching user info from the database
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+      email: json['email'],
       userId: json['userId'],
       userName: json['userName'],
       firstName: json['firstName'],
@@ -56,6 +59,7 @@ class User {
   // from object to json
   Map<String, dynamic> toJson(User user) {
     return {
+      'email': user.email,
       'userId': user.userId,
       'userName': user.userName,
       'firstName': user.firstName,

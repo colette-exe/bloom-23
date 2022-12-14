@@ -75,6 +75,7 @@ class UserListProvider with ChangeNotifier {
 
   // adding a user to the database
   // called when signing up
+  // NOT USED
   void addUser(User user) async {
     String message = await firebaseService.addUser(user.toJson(user));
     print(message);
