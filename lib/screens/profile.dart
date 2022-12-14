@@ -102,7 +102,6 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     // final String userId = context.read<AuthProvider>().getCurrentUser();
-    final profileKey = GlobalKey<ScaffoldState>();
 
     DocumentReference userDoc = context
         .watch<UserListProvider>()
@@ -111,7 +110,7 @@ class _ProfileState extends State<Profile> {
     // ScreenArguments uid = ScreenArguments(userDoc.id, []);
     String uid = userDoc.id;
     return Scaffold(
-      key: profileKey,
+      key: const Key('profilePage'),
       resizeToAvoidBottomInset: false,
       drawer: Drawer(
         child: Drawer(

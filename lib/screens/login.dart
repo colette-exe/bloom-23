@@ -14,12 +14,23 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController pwordController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
     final email = TextFormField(
       key: const Key('email'),
       controller: emailController,
       decoration: const InputDecoration(
         hintText: "Email",
       ),
+      // regex for email validation from https://www.abstractapi.com/tools/email-regex-guide/
+      validator: (value) {
+        RegExp re = RegExp(
+            r'^[a-zA-Z0-9.!#$%&’ +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$');
+        if (re.hasMatch(value!) && value.isNotEmpty) {
+          return null;
+        } else {
+          return "Enter a valid email address";
+        }
+      },
       style: const TextStyle(
         fontFamily: 'Poppins',
         fontSize: 14,
@@ -33,6 +44,16 @@ class _LoginState extends State<Login> {
       decoration: const InputDecoration(
         hintText: 'Password',
       ),
+      validator: (value) {
+        RegExp re1 = RegExp(r'.{8,}');
+        RegExp re2 = RegExp(r'[a-z]{1,}');
+        RegExp re3 = RegExp(r'[0-9]{1,}');
+        RegExp re4 = RegExp(r'[A-Z]{1,}');
+        RegExp re5 = RegExp(r'\W{1,}');
+        if (value!.length >= 8) {
+          return "Password must be at least 8 characters.";
+        }
+      },
       style: const TextStyle(
         fontFamily: 'Poppins',
         fontSize: 14,
@@ -48,9 +69,11 @@ class _LoginState extends State<Login> {
               const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
         ),
         onPressed: () {
-          context
-              .read<AuthProvider>()
-              .signIn(emailController.text, pwordController.text);
+          if (_formKey.currentState!.validate()) {
+            context
+                .read<AuthProvider>()
+                .signIn(emailController.text, pwordController.text);
+          }
         },
         child: const Text('LOG IN',
             style: TextStyle(
@@ -81,27 +104,30 @@ class _LoginState extends State<Login> {
     );
 
     return Scaffold(
+      key: const Key('loginPage'),
       backgroundColor: Colors.white,
       body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-          children: <Widget>[
-            const Text(
-              "LOG IN",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xff144c3b),
-                  fontSize: 25,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.bold),
-            ),
-            email,
-            password,
-            loginButton,
-            signUpButton
-          ],
-        ),
+        child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+              children: <Widget>[
+                const Text(
+                  "LOG IN",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xff144c3b),
+                      fontSize: 25,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+                email,
+                password,
+                loginButton,
+                signUpButton
+              ],
+            )),
       ),
     );
   }
