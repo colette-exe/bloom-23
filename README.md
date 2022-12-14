@@ -7,7 +7,16 @@ A shared todo app where you can see your friends' todos. Bloom together as all o
 ### D-1L
 
 ## Screenshots
-
+![Log In Page](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_01.png)
+![Profile - after successful log in](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_02.png)
+![Options](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_04.png)
+![Friends Page](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_05.png)
+![Received Friend Requests Page](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_06.png)
+![Viewing another user's profile](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_07.png)
+![Search for Users Page](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_08.png)
+![Sample searching](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_09.png)
+![Shared Todos Page](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_10.png)
+![Adding a new todo](https://github.com/CMSC-23-1st-Sem-2022-2023/project-colette-exe/blob/main/screenshots/flutter_11.png)
 
 ## Things you did in the code
 
