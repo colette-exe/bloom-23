@@ -1,3 +1,12 @@
+/*
+    Code from: CMSC 23 Authentication and Testing Discussion Code
+    Modified by: Angelica Nicolette U. Adoptante
+    Section: D1L
+    Date created: November 27, 2022
+    Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File Description: Firebase Authentication API
+ */
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // imports for widget testing
@@ -7,19 +16,19 @@ import 'package:flutter/material.dart';
 
 class FirebaseAuthAPI {
   // real database
-  // static final FirebaseAuth auth = FirebaseAuth.instance;
-  // static final FirebaseFirestore db = FirebaseFirestore.instance;
+  static final FirebaseAuth auth = FirebaseAuth.instance;
+  static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   //---- used for testing------------------------
-  final db = FakeFirebaseFirestore();
+  // final db = FakeFirebaseFirestore();
 
-  final auth = MockFirebaseAuth(
-      mockUser: MockUser(
-    isAnonymous: false,
-    uid: 'mockuid',
-    email: 'realuser@usersassociation.com',
-    displayName: 'Mackenzee',
-  ));
+  // final auth = MockFirebaseAuth(
+  //     mockUser: MockUser(
+  //   isAnonymous: false,
+  //   uid: 'mockuid',
+  //   email: 'realuser@usersassociation.com',
+  //   displayName: 'Mackenzee',
+  // ));
   // ----------------------------------------------
 
   Stream<User?> getUser() {

@@ -3,15 +3,14 @@
     Section: D1L
     Date created: November 14, 2022 (from Exercise 6)
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File description: Profile Page; display the currently logged in user's profile
  */
 import 'package:bloom/models/screen_arguments.dart';
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:bloom/providers/user_provider.dart';
-import 'package:bloom/screens/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:bloom/models/user_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -71,6 +70,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  // displays the user's bio
   Widget bioWidget(BuildContext context, bio, userId) {
     bioController.text = bio;
 
@@ -101,13 +101,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    // final String userId = context.read<AuthProvider>().getCurrentUser();
-
+    // get the currently logged in user
     DocumentReference userDoc = context
         .watch<UserListProvider>()
         .getUserById(context.watch<AuthProvider>().user!.uid);
-    print(userDoc);
-    // ScreenArguments uid = ScreenArguments(userDoc.id, []);
+
     String uid = userDoc.id;
     return Scaffold(
       key: const Key('profilePage'),
@@ -241,6 +239,7 @@ class _ProfileState extends State<Profile> {
                 if (snapshot.hasData && !snapshot.data!.exists) {
                   return const Text("Document does not exist");
                 }
+                // display profile
                 if (snapshot.connectionState == ConnectionState.done) {
                   Map<String, dynamic> data =
                       snapshot.data!.data() as Map<String, dynamic>;

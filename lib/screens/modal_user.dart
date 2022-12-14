@@ -3,7 +3,8 @@
     Section: D1L
     Date created: November 13, 2022 (from Exercise 6)
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
-    File Description: Used to provide the appropriate values to display in user_page
+    File Description: Used to provide the appropriate values to display in user_page,
+              as well as the actions the user can perform
  */
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

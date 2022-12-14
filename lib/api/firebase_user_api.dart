@@ -11,34 +11,15 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
 class FireBaseUserAPI {
-  // static final FirebaseFirestore db = FirebaseFirestore.instance;
+  static final FirebaseFirestore db = FirebaseFirestore.instance;
   static const String RECEIVED = "receivedFriendRequests";
   static const String SENT = "sentFriendRequests";
   static const String FRIENDS = "friends";
   static const String BIO = "bio";
 
   //---- used for testing------------------------
-  final db = FakeFirebaseFirestore();
+  // final db = FakeFirebaseFirestore();
   // ----------------------------------------------
-
-  // adding user after signing up
-  // NOT USED
-  Future<String> addUser(Map<String, dynamic> user) async {
-    try {
-      final DocumentReference userRef = await db.collection("users").add(user);
-      await db.collection("users").doc(userRef.id).set({'bio': ""});
-
-      try {
-        // add email to emails collection
-        await db.collection("emails").add(user['email']);
-        return "Successfully signed up!";
-      } on FirebaseException catch (e) {
-        return "Failed with error '${e.code}: ${e.message}";
-      }
-    } on FirebaseException catch (e) {
-      return "Failed with error '${e.code}: ${e.message}";
-    }
-  }
 
   // getting users
   // returns snapshots / documents
@@ -47,17 +28,6 @@ class FireBaseUserAPI {
   }
 
   DocumentReference<Map<String, dynamic>> checkEmail(String email) {
-    // try {
-    //   await db.collection("emails").doc(email).get().then((value) {
-    //     if (value.exists) {
-    //       return "in-use";
-    //     } else {
-    //       return "not-in-use";
-    //     }
-    //   });
-    // } on FirebaseException catch (e) {
-    //   return "Failed with error '${e.code}: ${e.message}";
-    // }
     return db.collection("emails").doc(email);
   }
 

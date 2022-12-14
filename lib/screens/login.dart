@@ -1,3 +1,10 @@
+/*
+    Modified by: Angelica Nicolette U. Adoptante
+    Section: D1L
+    Date created: November 27, 2022
+    Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File description: Log In Page
+ */
 import 'package:bloom/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,13 +52,11 @@ class _LoginState extends State<Login> {
         hintText: 'Password',
       ),
       validator: (value) {
-        RegExp re1 = RegExp(r'.{8,}');
-        RegExp re2 = RegExp(r'[a-z]{1,}');
-        RegExp re3 = RegExp(r'[0-9]{1,}');
-        RegExp re4 = RegExp(r'[A-Z]{1,}');
-        RegExp re5 = RegExp(r'\W{1,}');
         if (value!.length >= 8) {
-          return "Password must be at least 8 characters.";
+          print(value.length);
+          return null;
+        } else {
+          return "Password must be at least 8 characters long";
         }
       },
       style: const TextStyle(

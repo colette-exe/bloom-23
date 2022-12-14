@@ -6,14 +6,9 @@
     File Description: Sign Up Page
  */
 
-import 'package:bloom/api/firebase_user_api.dart';
-import 'package:bloom/providers/user_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bloom/providers/auth_provider.dart';
-
-import '../models/user_model.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

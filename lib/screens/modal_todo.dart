@@ -6,6 +6,9 @@
   Modified by: Angelica Nicolette U. Adoptante
   Section: D1L
   Date modified: December 5, 2022
+  Program Description: bloom - Shared Todo App (CMSC 23 Project)
+  File description: Handles todo functions and operations the 
+          currently logged in user can perform.
 */
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

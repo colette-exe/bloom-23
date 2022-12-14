@@ -44,42 +44,10 @@ class UserListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // to check if email already exists
-  checkEmail(String email) {
-    DocumentReference emailRef = firebaseService.checkEmail(email);
-    // print(emailRef);
-    // if (emailRef.toString() == 'null') {
-    //   return "not-in-use";
-    // } else {
-    //   return "in-use";
-    // }
-    String status = "not-in-use";
-    emailRef.get().then((value) {
-      if (value.exists) {
-        print("in here");
-        status = "in-use";
-      }
-    });
-    return status;
-  }
-
-  getEmails() async {
-    return await firebaseService.getEmails();
-  }
-
   // parameter: userName
   // returns a DocumentReference to the entry with userName as its userName
   getUserById(String id) {
     return firebaseService.getUserByUserId(id);
-  }
-
-  // adding a user to the database
-  // called when signing up
-  // NOT USED
-  void addUser(User user) async {
-    String message = await firebaseService.addUser(user.toJson(user));
-    print(message);
-    notifyListeners();
   }
 
   // user actions ------------------------->>>>>>>>>>>>---

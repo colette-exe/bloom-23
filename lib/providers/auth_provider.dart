@@ -1,6 +1,11 @@
 /*
-  From Exercise 7 Authentication and Testing Discussion Code
-*/
+    Code from: CMSC 23 Authentication and Testing Discussion Code
+    Modified by: Angelica Nicolette U. Adoptante
+    Section: D1L
+    Date created: November 27, 2022
+    Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File Description: Firebase Authentication Provider
+ */
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

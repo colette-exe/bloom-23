@@ -3,6 +3,7 @@
     Section: D1L
     Date created: November 14, 2022 (from Exercise 6)
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
+    File Description: Search Page
  */
 import 'package:bloom/screens/user_page.dart';
 import 'package:flutter/material.dart';

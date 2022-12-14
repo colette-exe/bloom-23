@@ -3,7 +3,8 @@
     Section: D1L
     Date created: November 13, 2022 (from Exercise 6)
     Program Description: bloom - Shared Todo App (CMSC 23 Project)
-    File Description: Displays users
+    File Description: Displays users, plus buttons for actions depending
+              on the pages that call it
  */
 import 'package:bloom/models/screen_arguments.dart';
 import 'package:bloom/screens/modal_user.dart';
@@ -12,8 +13,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:bloom/providers/user_provider.dart';
 import 'package:bloom/models/user_model.dart';
-import 'package:bloom/providers/auth_provider.dart';
-// screen import
 
 class UserPage extends StatefulWidget {
   String regex;
