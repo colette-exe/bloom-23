@@ -44,64 +44,33 @@ class UserListProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  getAllUserNames() {
-    return firebaseService.allUsers();
+  // to check if email already exists
+  checkEmail(String email) {
+    DocumentReference emailRef = firebaseService.checkEmail(email);
+    // print(emailRef);
+    // if (emailRef.toString() == 'null') {
+    //   return "not-in-use";
+    // } else {
+    //   return "in-use";
+    // }
+    String status = "not-in-use";
+    emailRef.get().then((value) {
+      if (value.exists) {
+        print("in here");
+        status = "in-use";
+      }
+    });
+    return status;
+  }
+
+  getEmails() async {
+    return await firebaseService.getEmails();
   }
 
   // parameter: userName
   // returns a DocumentReference to the entry with userName as its userName
   getUserById(String id) {
     return firebaseService.getUserByUserId(id);
-  }
-
-  // parameter: userId
-  // returns a DocumentReference to the entry with its userId
-  getNameByUserId(String userId) {
-    return firebaseService.getUserByUserId(userId).get();
-  }
-
-  checkStatus(String userId, String otherId) {
-    // get userId's friends, receivedFriendRequests, and sentFriendRequests lists
-    DocumentReference userRef = firebaseService.getUserByUserId(userId);
-    userRef.get().then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        // .data() returns a Map<String, dynamic>
-        // look for otherId
-        // in friends
-        List friends = documentSnapshot.get(FieldPath(const ['friends']));
-        for (var friend in friends) {
-          if (friend == otherId) {
-            // found in friends list
-            // options: Unfriend
-            return "Unfriend";
-          }
-        }
-        // in received requests
-        List requests =
-            documentSnapshot.get(FieldPath(const ['receivedFriendRequests']));
-        for (var user in requests) {
-          if (user == otherId) {
-            // found in received requests list
-            // options: Accept, Reject
-            return "Accept Friend Request, Reject Friend Request";
-          }
-        }
-        // in sent requests
-        List sent =
-            documentSnapshot.get(FieldPath(const ['sentFriendRequests']));
-        for (var s in sent) {
-          if (s == otherId) {
-            // found in sent requests list
-            // options: Cancel Request
-            return "Cancel Request";
-          }
-        }
-        // else : complete strangers
-        return "Strangers";
-      } else {
-        return "";
-      }
-    });
   }
 
   // adding a user to the database

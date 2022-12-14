@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // imports for widget testing
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseAuthAPI {
   // real database
@@ -39,7 +40,7 @@ class FirebaseAuthAPI {
     }
   }
 
-  void signUp(String firstName, String lastName, String email, String password,
+  signUp(String firstName, String lastName, String email, String password,
       String bday, String location, String username) async {
     UserCredential credential;
     try {
@@ -61,7 +62,7 @@ class FirebaseAuthAPI {
         print('The account already exists for that email.');
       }
     } catch (e) {
-      print(e);
+      return e;
     }
   }
 

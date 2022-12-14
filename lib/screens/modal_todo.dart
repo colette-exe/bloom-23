@@ -21,6 +21,7 @@ class TodoModal extends StatelessWidget {
   TextEditingController descController = TextEditingController();
   TextEditingController statController = TextEditingController();
   TextEditingController deadlineController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
   bool? ongoing = false;
   bool? paused = false;
   bool? completed = false;
@@ -102,6 +103,10 @@ class TodoModal extends StatelessWidget {
       // add
       case 'Add':
         {
+          timeController.text =
+              "${DateTime.now().hour}:${DateTime.now().minute + 5}";
+          deadlineController.text =
+              "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}";
           return Column(mainAxisSize: MainAxisSize.min, children: [
             // title
             TextField(
@@ -163,6 +168,37 @@ class TodoModal extends StatelessWidget {
                 fontFamily: 'Poppins',
                 fontSize: 14,
               ),
+            ),
+            // time
+            TextFormField(
+              controller: timeController,
+              key: const Key('time'),
+              decoration: const InputDecoration(
+                labelText: "Time",
+                labelStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: 'Poppins',
+                    color: Colors.black54),
+              ),
+              onTap: (() async {
+                TimeOfDay? time = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay(
+                        hour: DateTime.now().hour,
+                        minute: DateTime.now().minute));
+
+                if (time == null || time == "") {
+                  timeController.text =
+                      "${DateTime.now().hour}:${DateTime.now().minute + 5}"; // due in 5 minutes
+                } else {
+                  timeController.text = "${time.hour}:${time.minute}";
+                }
+              }),
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 14,
+              ),
             )
           ]);
         }
@@ -174,6 +210,7 @@ class TodoModal extends StatelessWidget {
           descController.text = todo.description;
           statController.text = todo.status;
           deadlineController.text = todo.deadline;
+          timeController.text = todo.time;
 
           return Column(
               mainAxisSize: MainAxisSize.min,
@@ -256,6 +293,37 @@ class TodoModal extends StatelessWidget {
                     fontSize: 14,
                   ),
                 ),
+                // time
+                TextFormField(
+                  controller: timeController,
+                  key: const Key('time'),
+                  decoration: const InputDecoration(
+                    labelText: "Time",
+                    labelStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Poppins',
+                        color: Colors.black54),
+                  ),
+                  onTap: (() async {
+                    TimeOfDay? time = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay(
+                            hour: DateTime.now().hour,
+                            minute: DateTime.now().minute));
+
+                    if (time == null || time == "") {
+                      timeController.text =
+                          "${DateTime.now().hour}:${DateTime.now().minute + 5}"; // due in 5 minutes
+                    } else {
+                      timeController.text = "${time.hour}:${time.minute}";
+                    }
+                  }),
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                  ),
+                )
               ]);
         }
       case "Edit-friend":
@@ -265,6 +333,7 @@ class TodoModal extends StatelessWidget {
           titleController.text = todo.title;
           descController.text = todo.description;
           deadlineController.text = todo.deadline;
+          timeController.text = todo.time;
 
           return Column(
               mainAxisSize: MainAxisSize.min,
@@ -334,6 +403,37 @@ class TodoModal extends StatelessWidget {
                     fontSize: 14,
                   ),
                 ),
+                // time
+                TextFormField(
+                  controller: timeController,
+                  key: const Key('time'),
+                  decoration: const InputDecoration(
+                    labelText: "Time",
+                    labelStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Poppins',
+                        color: Colors.black54),
+                  ),
+                  onTap: (() async {
+                    TimeOfDay? time = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay(
+                            hour: DateTime.now().hour,
+                            minute: DateTime.now().minute));
+
+                    if (time == null || time == "") {
+                      timeController.text =
+                          "${DateTime.now().hour}:${DateTime.now().minute + 5}"; // due in 5 minutes
+                    } else {
+                      timeController.text = "${time.hour}:${time.minute}";
+                    }
+                  }),
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                  ),
+                )
               ]);
         }
       case 'View':
@@ -397,6 +497,14 @@ class TodoModal extends StatelessWidget {
                       color: Colors.black87),
                 ),
                 Text(
+                  todo.time,
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Poppins',
+                      color: Colors.black87),
+                ),
+                Text(
                   todo.status,
                   style: const TextStyle(
                       fontSize: 12,
@@ -445,7 +553,8 @@ class TodoModal extends StatelessWidget {
                     ownerId: uid,
                     history: [],
                     ownerFriends: [],
-                    deadline: deadlineController.text);
+                    deadline: deadlineController.text,
+                    time: timeController.text);
 
                 context.read<TodoListProvider>().addTodo(temp);
 
@@ -514,31 +623,44 @@ class TodoModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      scrollable: true,
-      title: _buildTitle(),
-      content: _buildContent(context),
+    if (type != 'View') {
+      return AlertDialog(
+        scrollable: true,
+        title: _buildTitle(),
+        content: _buildContent(context),
 
-      // Contains two buttons - add/edit/delete, and cancel
-      actions: <Widget>[
-        _dialogAction(context),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          style: TextButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.labelLarge,
+        // Contains two buttons - add/edit, and cancel
+        actions: <Widget>[
+          _dialogAction(context),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins',
+                  color: Colors.black87),
+            ),
           ),
-          child: const Text(
-            "Cancel",
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins',
-                color: Colors.black87),
-          ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return AlertDialog(
+        scrollable: true,
+        title: _buildTitle(),
+        content: _buildContent(context),
+
+        // Contains one button - Done
+        actions: <Widget>[
+          _dialogAction(context),
+        ],
+      );
+    }
   }
 }

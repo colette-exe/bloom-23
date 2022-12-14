@@ -21,7 +21,13 @@ class FireBaseUserAPI {
       final DocumentReference userRef = await db.collection("users").add(user);
       await db.collection("users").doc(userRef.id).set({'bio': ""});
 
-      return "Successfully signed up!";
+      try {
+        // add email to emails collection
+        await db.collection("emails").add(user['email']);
+        return "Successfully signed up!";
+      } on FirebaseException catch (e) {
+        return "Failed with error '${e.code}: ${e.message}";
+      }
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }
@@ -33,24 +39,31 @@ class FireBaseUserAPI {
     return db.collection("users").snapshots();
   }
 
-  allUsers() {
-    return db
-        .collection("users")
-        .get()
-        .then((value) => value.docs.forEach((element) {
-              element.data();
-            }));
+  DocumentReference<Map<String, dynamic>> checkEmail(String email) {
+    // try {
+    //   await db.collection("emails").doc(email).get().then((value) {
+    //     if (value.exists) {
+    //       return "in-use";
+    //     } else {
+    //       return "not-in-use";
+    //     }
+    //   });
+    // } on FirebaseException catch (e) {
+    //   return "Failed with error '${e.code}: ${e.message}";
+    // }
+    return db.collection("emails").doc(email);
+  }
+
+  getEmails() async {
+    QuerySnapshot querySnapshot = await db.collection("emails").get();
+
+    final data = querySnapshot.docs.map((e) => e.id).toList();
+    return data;
   }
 
   // get a user based on their userId
   DocumentReference<Map<String, dynamic>> getUserByUserId(String userId) {
     return db.collection("users").doc(userId);
-  }
-
-  // get a user based on their userId
-  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserSnapshot(
-      String userId) {
-    return db.collection("users").doc(userId).snapshots();
   }
 
   // Add Friend (user to otherUser)

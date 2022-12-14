@@ -32,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String bday = "";
   TextEditingController locationController = TextEditingController();
   TextEditingController pwordController = TextEditingController();
+  String emailStatus = "not-in-use";
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -183,7 +184,7 @@ class _SignUpPageState extends State<SignUpPage> {
         RegExp re3 = RegExp(r'[0-9]{1,}');
         RegExp re4 = RegExp(r'[A-Z]{1,}');
         RegExp re5 = RegExp(r'\W{1,}');
-        if (re1.hasMatch(value!)) {
+        if (value!.length >= 8) {
           if (re2.hasMatch(value)) {
             if (re3.hasMatch(value)) {
               if (re4.hasMatch(value)) {
@@ -226,6 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     locationController.text,
                     unameController.text,
                   );
+
               Navigator.pop(context);
             }
           },

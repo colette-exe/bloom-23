@@ -234,23 +234,6 @@ class _TodoPageState extends State<TodoPage> {
                                         .read<TodoListProvider>()
                                         .changeSelectedTodo(todo);
                                     return TodoModal(
-                                        type: 'Toggle-status',
-                                        uid: uid,
-                                        status: todo.status);
-                                  },
-                                );
-                              },
-                              icon: button),
-                          IconButton(
-                              color: const Color(0xff676d16),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    context
-                                        .read<TodoListProvider>()
-                                        .changeSelectedTodo(todo);
-                                    return TodoModal(
                                         type: 'Edit-friend', uid: uid);
                                   },
                                 );

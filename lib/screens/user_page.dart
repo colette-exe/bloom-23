@@ -218,14 +218,14 @@ class _UserPageState extends State<UserPage> {
                   return ListTile(
                     title: Text("${user.firstName} ${user.lastName}",
                         style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Poppins',
                             color: Colors.black87)),
                     trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                       IconButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            // Navigator.pop(context);
                             Navigator.pushNamed(context, '/view-profile',
                                 arguments: ScreenArguments(user.userId, user));
                           },
