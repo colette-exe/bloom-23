@@ -153,6 +153,22 @@ void main() {
     });
   });
 
+  group("User Actions Test (UserListProvided)", () {
+    test("Get users test", () {
+      expect(
+          userProv.users, const TypeMatcher<Stream<QuerySnapshot<Object?>>>());
+    });
+    test("changeSelectedUser test", () {
+      userProv.changeSelectedUser(user);
+      expect(userProv.selected, user);
+    });
+    // getUserByUserId() (calls function with same name in firebase_user_api.dart)
+    test("getUserByUserId() Test", () {
+      expect(userProv.getUserById(user.userId),
+          const TypeMatcher<DocumentReference<Map<String, dynamic>>>());
+    });
+  });
+
   group("Todo Functions Test", () {
     test("addTodo() test", () async {
       expect(await todoApi.addTodo(todo1Map), "Successfully added todo!");
@@ -193,6 +209,18 @@ void main() {
           "Successfully changed todo status!");
       // await todoApi.completeTodo(todo1.id);
       // expect(todo1.status, "completed");
+    });
+  });
+
+  group("Todo Functions Test (TodoListProvider)", () {
+    test("Get todos test", () {
+      expect(
+          todoProv.todos, const TypeMatcher<Stream<QuerySnapshot<Object?>>>());
+    });
+
+    test("changeSelectedTodo test", () {
+      todoProv.changeSelectedTodo(todo1);
+      expect(todoProv.selected, todo1);
     });
   });
 }
