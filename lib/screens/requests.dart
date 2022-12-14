@@ -22,6 +22,7 @@ class _RequestsPageState extends State<RequestsPage> {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     String uid = args.uid;
     return Scaffold(
+      key: const Key('requestsPage'),
       appBar: AppBar(
         title: const Text('Received Requests',
             style: TextStyle(

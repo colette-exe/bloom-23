@@ -22,6 +22,7 @@ class _FriendsPageState extends State<FriendsPage> {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     String uid = args.uid;
     return Scaffold(
+      key: const Key('friendsPage'),
       appBar: AppBar(
         title: const Text('Friends',
             style: TextStyle(

@@ -19,14 +19,6 @@ class FireBaseUserAPI {
 
   //---- used for testing------------------------
   final db = FakeFirebaseFirestore();
-
-  final auth = MockFirebaseAuth(
-      mockUser: MockUser(
-    isAnonymous: false,
-    uid: 'mockuid',
-    email: 'realuser@usersassociation.com',
-    displayName: 'Mackenzee',
-  ));
   // ----------------------------------------------
 
   // adding user after signing up

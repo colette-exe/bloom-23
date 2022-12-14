@@ -24,6 +24,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     return Scaffold(
+      key: const Key('searchPage'),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Search',

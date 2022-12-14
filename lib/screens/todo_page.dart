@@ -28,6 +28,7 @@ class _TodoPageState extends State<TodoPage> {
     String uid = args.uid;
     Stream<QuerySnapshot> todoStream = context.watch<TodoListProvider>().todos;
     return Scaffold(
+      key: const Key('todosPage'),
       appBar: AppBar(
         title: const Text('Todos',
             style: TextStyle(

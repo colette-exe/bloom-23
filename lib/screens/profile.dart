@@ -102,6 +102,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     // final String userId = context.read<AuthProvider>().getCurrentUser();
+    final profileKey = GlobalKey<ScaffoldState>();
 
     DocumentReference userDoc = context
         .watch<UserListProvider>()
@@ -110,6 +111,7 @@ class _ProfileState extends State<Profile> {
     // ScreenArguments uid = ScreenArguments(userDoc.id, []);
     String uid = userDoc.id;
     return Scaffold(
+      key: profileKey,
       resizeToAvoidBottomInset: false,
       drawer: Drawer(
         child: Drawer(
@@ -127,6 +129,7 @@ class _ProfileState extends State<Profile> {
                       color: Colors.white)),
             ),
             ListTile(
+                key: const Key('profileFriend'),
                 title: const Text(
                   'Friends',
                   style: TextStyle(
@@ -142,6 +145,7 @@ class _ProfileState extends State<Profile> {
                       arguments: ScreenArguments(uid, null));
                 }),
             ListTile(
+                key: const Key('profileRequest'),
                 title: const Text(
                   'Friend Requests',
                   style: TextStyle(
@@ -157,6 +161,7 @@ class _ProfileState extends State<Profile> {
                       arguments: ScreenArguments(uid, null));
                 }),
             ListTile(
+                key: const Key('profileSearch'),
                 title: const Text(
                   'Search Users',
                   style: TextStyle(
@@ -172,6 +177,7 @@ class _ProfileState extends State<Profile> {
                       arguments: ScreenArguments(uid, null));
                 }),
             ListTile(
+                key: const Key('profileTodo'),
                 title: const Text(
                   'Todos',
                   style: TextStyle(

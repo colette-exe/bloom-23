@@ -258,6 +258,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
 
     return Scaffold(
+      key: const Key('signUpPage'),
       backgroundColor: Colors.white,
       body: Center(
           child: Form(
