@@ -127,9 +127,9 @@ class _TodoPageState extends State<TodoPage> {
                                               .read<TodoListProvider>()
                                               .changeSelectedTodo(todo);
                                           return TodoModal(
-                                              type: 'View',
-                                              uid: uid,
-                                              status: todo.status);
+                                            type: 'View',
+                                            uid: uid,
+                                          );
                                         });
                                   },
                                   icon: const Icon(

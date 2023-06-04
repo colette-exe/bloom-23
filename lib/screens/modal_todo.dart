@@ -18,7 +18,6 @@ import 'package:bloom/providers/todo_provider.dart';
 class TodoModal extends StatelessWidget {
   String type;
   String uid;
-  String? status;
   // int todoIndex;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -29,7 +28,7 @@ class TodoModal extends StatelessWidget {
   bool? paused = false;
   bool? completed = false;
 
-  TodoModal({super.key, required this.type, required this.uid, this.status});
+  TodoModal({super.key, required this.type, required this.uid});
 
   // Method to show the title of the modal depending on the functionality
   Text _buildTitle() {
@@ -83,11 +82,6 @@ class TodoModal extends StatelessWidget {
 
   // Method to build the content or body depending on the functionality
   Widget _buildContent(BuildContext context) {
-    if (status == 'completed') {
-      status = 'ongoing';
-    } else {
-      status = 'completed';
-    }
     // Use context.read to get the last updated list of todos
     // List<Todo> todoItems = context.read<TodoListProvider>().todo;
 
@@ -520,6 +514,13 @@ class TodoModal extends StatelessWidget {
           ]);
         }
       default:
+        String status = "";
+        if (context.read<TodoListProvider>().selected.status == 'completed') {
+          status = 'ongoing';
+        } else {
+          status = 'completed';
+        }
+        // print(status);
         return Text(
           "Mark '${context.read<TodoListProvider>().selected.title}' as $status?",
           style: const TextStyle(
